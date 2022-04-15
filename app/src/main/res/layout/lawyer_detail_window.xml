@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:ignore="HardcodedText"
+    app:contentPadding="10dip"
+    app:cardCornerRadius="5dip"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+<androidx.constraintlayout.utils.widget.ImageFilterView
+    android:layout_width="100dip"
+    android:layout_height="100dip"
+    android:src="@drawable/lawyer_icon3"
+    android:id="@+id/lawyerProfileImage"
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Name: "
+        android:layout_marginStart="10dip"
+        android:id="@+id/nameLabel"
+        app:layout_constraintStart_toEndOf="@+id/lawyerProfileImage"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="20dip"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sarmad Ali"
+        app:layout_constraintStart_toEndOf="@+id/nameLabel"
+        android:layout_marginTop="20dip"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginStart="5dip"
+        android:id="@+id/name"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Practices: "
+        android:layout_marginStart="10dip"
+        app:layout_constraintStart_toEndOf="@+id/lawyerProfileImage"
+        app:layout_constraintTop_toBottomOf="@+id/nameLabel"
+        android:layout_marginTop="10dip"
+        android:id="@+id/practicesLabel"
+         />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Appellate Law"
+        app:layout_constraintTop_toBottomOf="@+id/nameLabel"
+        android:layout_marginTop="10dip"
+        android:layout_marginStart="5dip"
+        android:id="@+id/practice"
+        app:layout_constraintStart_toEndOf="@+id/practicesLabel"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/perCaseRateLabel"
+        android:text="Rate Per Case: "
+        app:layout_constraintTop_toBottomOf="@+id/lawyerProfileImage"
+        app:layout_constraintStart_toEndOf="@+id/lawyerProfileImage"
+        app:layout_constraintEnd_toEndOf="@+id/lawyerProfileImage"
+        android:layout_marginTop="20dip"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/caseRate"
+        app:layout_constraintStart_toEndOf="@+id/perCaseRateLabel"
+        app:layout_constraintTop_toBottomOf="@+id/lawyerProfileImage"
+        android:layout_marginTop="20dip"
+        android:layout_marginStart="10dip"
+        android:text="100,000 - 200,000"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textStyle="bold"
+        android:text="Working Days"
+        app:layout_constraintTop_toBottomOf="@id/perCaseRateLabel"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:id="@+id/workdingDaysLabel"
+        android:layout_marginTop="30dip"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Mon-Thu-Wed-Thur-Sat-Sun"
+        android:id="@+id/workingDays"
+        app:layout_constraintTop_toBottomOf="@+id/workdingDaysLabel"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="10dip"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textStyle="bold"
+        android:text="Office Timing: "
+        android:id="@+id/officeTimingLabel"
+        android:layout_marginTop="10dip"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/workingDays"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="08:45 AM TO 12:00 PM"
+        android:id="@+id/workingTime"
+        app:layout_constraintTop_toBottomOf="@+id/officeTimingLabel"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="10dip"/>
+    <androidx.appcompat.widget.AppCompatButton
+        android:layout_width="0dip"
+        android:layout_height="wrap_content"
+        android:text="Close"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="5dip"
+        app:layout_constraintTop_toTopOf="parent"
+        android:id="@+id/lawyerDetailCloseButton"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/appointment_booking_btn"
+        android:text="Book Appointment"
+        android:textAllCaps="false"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/workingTime"
+        android:layout_marginTop="10dp"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>

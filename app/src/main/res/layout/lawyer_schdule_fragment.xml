@@ -1,0 +1,344 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/material_dynamic_neutral_variant20">
+
+    <TextView
+        android:id="@+id/textTitle1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dip"
+        android:text="Set Working Days"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="#FFF"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dip"
+        android:gravity="center"
+        android:id="@+id/dayPickerContainer"
+        android:orientation="horizontal"
+        android:paddingStart="10dip"
+        android:paddingEnd="10dip"
+        app:layout_constraintTop_toBottomOf="@+id/textTitle1">
+        <androidx.cardview.widget.CardView
+            android:id="@+id/monday_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#FFF"
+            android:gravity="center"
+            app:cardElevation="2dip"
+            app:cardCornerRadius="5dip"
+            app:contentPadding="10dip">
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:tag="1"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#000000"
+                    android:textStyle="bold"
+
+                    android:text="Mon"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#000000"
+                    android:textStyle="bold"
+                    android:tag="2"
+                    android:layout_gravity="center"
+                    android:text="22"/>
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </androidx.cardview.widget.CardView>
+        <androidx.cardview.widget.CardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#FFF"
+            android:id="@+id/tuesday_btn"
+            android:layout_marginStart="10dip"
+            android:gravity="center"
+            app:cardElevation="2dip"
+            app:cardCornerRadius="5dip"
+            app:contentPadding="10dip"
+            android:padding="10dip">
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:tag="2"
+                android:orientation="vertical">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#000000"
+                android:textStyle="bold"
+
+                android:text="Tue"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#000000"
+                    android:textStyle="bold"
+                    android:tag="2"
+                    android:layout_gravity="center"
+                    android:text="12"/>
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </androidx.cardview.widget.CardView>
+        <androidx.cardview.widget.CardView
+            android:id="@+id/wednesday_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#FFF"
+            android:gravity="center"
+            app:cardElevation="2dip"
+            android:layout_marginStart="10dip"
+            app:cardCornerRadius="5dip"
+            app:contentPadding="10dip">
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:tag="3"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#000000"
+                    android:textStyle="bold"
+
+                    android:text="Wed"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#000000"
+                    android:textStyle="bold"
+
+                    android:layout_gravity="center"
+                    android:text="9"/>
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </androidx.cardview.widget.CardView>
+        <androidx.cardview.widget.CardView
+            android:id="@+id/thursday_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#FFF"
+            android:gravity="center"
+            app:cardElevation="2dip"
+            app:cardCornerRadius="5dip"
+            android:layout_marginStart="10dip"
+            app:contentPadding="10dip">
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:tag="4"
+
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#000000"
+                    android:textStyle="bold"
+
+                    android:text="Thu"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#000000"
+                    android:textStyle="bold"
+                    android:tag="2"
+                    android:layout_gravity="center"
+                    android:text="14"/>
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </androidx.cardview.widget.CardView>
+        <androidx.cardview.widget.CardView
+            android:id="@+id/friday_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#FFF"
+            android:gravity="center"
+            app:cardElevation="2dip"
+            android:layout_marginStart="10dip"
+            app:cardCornerRadius="5dip"
+            app:contentPadding="10dip">
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:tag="5"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#000000"
+                    android:textStyle="bold"
+
+                    android:text="Fri"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#000000"
+                    android:textStyle="bold"
+                    android:tag="2"
+                    android:layout_gravity="center"
+                    android:text="3"/>
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </androidx.cardview.widget.CardView>
+        <androidx.cardview.widget.CardView
+            android:id="@+id/saturday_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#FFF"
+            android:gravity="center"
+            app:cardElevation="2dip"
+            app:cardCornerRadius="5dip"
+            android:layout_marginStart="10dip"
+            app:contentPadding="10dip">
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:tag="6"
+
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#000000"
+                    android:textStyle="bold"
+
+                    android:text="Sat"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#000000"
+                    android:textStyle="bold"
+                    android:tag="2"
+                    android:layout_gravity="center"
+                    android:text="13"/>
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </androidx.cardview.widget.CardView>
+        <androidx.cardview.widget.CardView
+            android:id="@+id/sunday_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#FFF"
+            android:gravity="center"
+            app:cardElevation="2dip"
+            android:layout_marginStart="10dip"
+            app:cardCornerRadius="5dip"
+            app:contentPadding="10dip">
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:tag="7"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#000000"
+                    android:textStyle="bold"
+
+                    android:text="Sun"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#000000"
+                    android:textStyle="bold"
+                    android:tag="7"
+                    android:layout_gravity="center"
+                    android:text="22"/>
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </androidx.cardview.widget.CardView>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dip"
+        app:layout_constraintTop_toBottomOf="@+id/dayPickerContainer"
+        android:background="#FFF"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="10dip"
+        android:id="@+id/divider1"
+        android:layout_marginEnd="20dip"
+        android:layout_marginStart="20dip"/>
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:textAppearance="?android:attr/textAppearanceMedium"
+    android:text="Set Working Hours"
+    app:layout_constraintTop_toBottomOf="@+id/divider1"
+    android:layout_marginTop="10dip"
+    android:textColor="#FFF"
+    android:id="@+id/title2"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"/>
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="10dip"
+        android:id="@+id/time_picker_container"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/title2">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="From: "
+            android:textAppearance="?android:textAppearanceMedium"
+            android:textColor="#FFF"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dip"
+            android:text="00:00 PM"
+            android:id="@+id/fromTime"
+            android:textAppearance="?android:textAppearanceMedium"
+            android:textColor="#FFF" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="To: "
+
+            android:textAppearance="?android:textAppearanceMedium"
+            android:textColor="#FFF"
+            android:layout_marginStart="50dip"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="00:00 AM"
+            android:id="@+id/toTime"
+            android:textAppearance="?android:textAppearanceMedium"
+            android:textColor="#FFF"
+            android:layout_marginStart="10dip"/>
+    </androidx.appcompat.widget.LinearLayoutCompat>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Update Schedule"
+        android:textAllCaps="false"
+        app:layout_constraintTop_toBottomOf="@+id/time_picker_container"
+        android:layout_marginTop="20dip"
+        android:layout_marginStart="30dip"
+        android:id="@+id/updateScheduleBtn"
+        android:layout_marginEnd="30dip"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

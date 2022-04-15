@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1049912558191",
+    "project_id": "pak-lawyer",
+    "storage_bucket": "pak-lawyer.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1049912558191:android:732babb8892f4ce852c39a",
+        "android_client_info": {
+          "package_name": "com.fyp.lawyer_project"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1049912558191-k4k9tptvdg81kg6mafegqaoous53b2gc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAAkkqRcN0tdzb24uC_NB2JzYui2jts_tM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1049912558191-k4k9tptvdg81kg6mafegqaoous53b2gc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

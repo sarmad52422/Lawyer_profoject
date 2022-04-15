@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/my_profile_btn"
+        android:title="My Profile"/>
+    <item android:id="@+id/browserLawyers"
+        android:title="Browser Lawyers"/>
+
+    <item android:id="@+id/my_cases"
+        android:title="My Cases"/>
+
+
+    <item android:id="@+id/my_appointments"
+        android:title="Appointments"/>
+    <item android:id="@+id/my_cases_progress"
+        android:title="Cases Progress"/>
+
+</menu>

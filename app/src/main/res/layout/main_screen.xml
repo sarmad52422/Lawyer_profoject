@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#333958"
+    android:gravity="center"
+    android:orientation="vertical"
+    tools:ignore="HardcodedText"
+    >
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="50sp"
+        android:textAlignment="center"
+        android:textColor="#FFFFFF"
+        android:text="Pak Lawyers"
+        android:fontFamily="cursive"
+      />
+    <Button
+        android:id="@+id/lawyer_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="34dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="30dp"
+        android:background="@drawable/custom_button_login"
+        android:text="Lawyer"
+        android:textAllCaps="false"
+        android:textColor="#FFF"
+        android:textSize="16sp" />
+    <Button
+        android:id="@+id/client_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:layout_marginStart="34dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="30dp"
+        android:background="@drawable/custom_button_login"
+        android:text="Client"
+        android:textAllCaps="false"
+        android:textColor="#FFF"
+        android:textSize="16sp" />
+</LinearLayout>

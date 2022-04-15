@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    app:cardElevation="2dip"
+    app:cardCornerRadius="10dip">
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/material_dynamic_neutral_variant20"
+            android:padding="20dip">
+
+            <TextView
+                android:id="@+id/appointment_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Appointment Request"
+                android:textColor="#FFFFFF"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.constraintlayout.utils.widget.ImageFilterView
+                android:id="@+id/clock_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dip"
+                android:src="@android:drawable/ic_dialog_info"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/appointment_type" />
+
+            <TextView
+                android:id="@+id/appointment_date_and_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dip"
+                android:text="12 Jan 2022, 8am - 10am"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="#FFFFFF"
+                app:layout_constraintBottom_toBottomOf="@id/clock_icon"
+                app:layout_constraintStart_toEndOf="@id/clock_icon"
+                app:layout_constraintTop_toTopOf="@id/clock_icon" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="20dip">
+            <androidx.constraintlayout.utils.widget.ImageFilterView
+                android:layout_width="50dip"
+                android:layout_height="50dip"
+                android:src="@drawable/lawyer_icon3"
+                android:id="@+id/client_icon"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/client_first_name"
+                android:text="Sarmad"
+                android:textStyle="bold"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="#000"
+                android:layout_marginStart="10dip"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toEndOf="@id/client_icon"
+       />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/client_last_name"
+                android:text="Ali"
+                android:layout_marginStart="10dip"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="#000"
+                android:textStyle="bold"
+                app:layout_constraintStart_toEndOf="@id/client_icon"
+                app:layout_constraintTop_toBottomOf="@+id/client_first_name"/>
+            <androidx.appcompat.widget.AppCompatButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Accept"
+                android:paddingStart="60dip"
+                android:paddingEnd="60dip"
+                android:minHeight="35dip"
+                android:textColor="#FFFFFF"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                app:layout_constraintTop_toBottomOf="@+id/client_icon"
+                android:layout_marginTop="10dip"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginStart="10dip"
+                android:background="@drawable/rounder_corner_button"
+                android:id="@+id/accept_appointment_button"/>
+            <androidx.appcompat.widget.AppCompatButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Decline"
+                android:textColor="#FFFFFF"
+                android:minHeight="35dip"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                app:layout_constraintTop_toBottomOf="@+id/client_icon"
+                android:layout_marginTop="10dip"
+                app:layout_constraintStart_toEndOf="@+id/accept_appointment_button"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginStart="10dip"
+                android:background="@drawable/rounder_corner_button"
+                android:id="@+id/cancel_appointment_button"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+</com.google.android.material.card.MaterialCardView>

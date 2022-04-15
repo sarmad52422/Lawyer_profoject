@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/my_profile_btn"
+          android:title="My Profile"/>
+    <item android:id="@+id/my_clients_btn"
+        android:title="My Clients"/>
+
+
+    <item android:id="@+id/case_req_btn"
+        android:title="Case Requests"/>
+    <item android:id="@+id/mng_schedules"
+           android:title="Manage Schedules"/>
+
+</menu>

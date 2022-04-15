@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+
+    android:orientation="vertical"
+    app:cardBackgroundColor="#FFF"
+    app:cardCornerRadius="5dip"
+>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:background="#FFF"
+        android:orientation="vertical"
+        android:padding="10dip">
+
+        <androidx.constraintlayout.utils.widget.ImageFilterView
+            android:id="@+id/practice_Image"
+            android:layout_width="180dip"
+            android:layout_height="180dip"
+            android:background="#FFF"
+            android:layout_gravity="center"
+            android:src="@drawable/copy_right_law" />
+
+        <TextView
+            android:id="@+id/practice_Text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Copy Right Law"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="#000" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+</com.google.android.material.card.MaterialCardView>

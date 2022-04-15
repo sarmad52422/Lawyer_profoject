@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#333958"
+    >
+
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="17dp"
+        android:fontFamily="cursive"
+        android:text="Lawyer"
+        android:textColor="#fff"
+        android:textSize="50sp" />
+
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="90dp">
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="17dp"
+                android:text="Click here to set picture"
+                android:textColor="#fff"
+                android:textSize="20sp" />
+
+            <ImageView
+                android:id="@+id/profileImage"
+                android:layout_width="200sp"
+                android:layout_height="200sp"
+                android:layout_marginTop="30dp"
+                android:src="@drawable/lawyer" />
+
+
+            <EditText
+                android:id="@+id/lawyerusernamefield"
+                android:layout_width="302dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="58dp"
+                android:layout_marginTop="42dp"
+                android:layout_marginEnd="62dp"
+                android:ems="10"
+                android:hint="Full Names"
+                android:inputType="textEmailAddress"
+                android:textColor="#fff" />
+
+
+
+
+            <EditText
+                android:id="@+id/lawyeremailfield"
+                android:layout_width="302dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="58dp"
+                android:layout_marginTop="42dp"
+                android:layout_marginEnd="62dp"
+                android:ems="10"
+                android:hint="Email Address"
+                android:inputType="textEmailAddress"
+                android:textColor="#fff" />
+
+            <EditText
+                android:id="@+id/phoneNumberField"
+                android:layout_width="302dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="58dp"
+                android:layout_marginTop="42dp"
+                android:layout_marginEnd="62dp"
+                android:ems="10"
+                android:hint="Phone Number"
+                android:textColor="#fff" />
+
+            <EditText
+                android:id="@+id/practiceField"
+                android:layout_width="302dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="58dp"
+                android:layout_marginTop="42dp"
+                android:layout_marginEnd="62dp"
+                android:ems="10"
+                android:hint="Areas of Law Practice "
+                android:textColor="#fff" />
+
+
+
+
+            <EditText
+                android:id="@+id/passwfield"
+                android:layout_width="302dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="58dp"
+                android:layout_marginTop="42dp"
+                android:layout_marginEnd="62dp"
+                android:hint="Password"
+                android:inputType="textPassword"
+                android:textColor="#fff" />
+
+            <EditText
+                android:id="@+id/confirmfield"
+                android:layout_width="299dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="57dp"
+                android:layout_marginTop="35dp"
+                android:layout_marginEnd="62dp"
+                android:ems="10"
+                android:hint="Confirm Password"
+                android:inputType="textPassword"
+                android:textColor="#fff" />
+
+
+            <Button
+                android:id="@+id/submit_details_btn"
+                android:layout_width="302dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="58dp"
+                android:layout_marginTop="42dp"
+                android:layout_marginEnd="62dp"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/custom_button_signup"
+                android:text="Create Your Account"
+                android:textAllCaps="false"
+                android:textColor="#FFFF"
+                android:textSize="16sp" />
+
+        </LinearLayout>
+    </ScrollView>
+
+
+</RelativeLayout>
