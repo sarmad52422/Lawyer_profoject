@@ -6,8 +6,8 @@ public class Lawyer extends User{
     private double startPrice = 0.0d;
     private double endPrice = 0.0d;
 
-    public Lawyer(String fullName, String emailAddress, String password, String phoneNumber, String practiceArea, double startPrice, double endPrice) {
-        super(fullName, emailAddress, password, phoneNumber);
+    public Lawyer(String userType,String fullName, String emailAddress, String password, String phoneNumber, String practiceArea, double startPrice, double endPrice) {
+        super(userType,fullName, emailAddress, password, phoneNumber);
         this.practiceArea = practiceArea;
         this.startPrice = startPrice;
         this.endPrice = endPrice;

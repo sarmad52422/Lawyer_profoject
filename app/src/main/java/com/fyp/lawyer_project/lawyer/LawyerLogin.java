@@ -24,7 +24,7 @@ public class LawyerLogin extends RootFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.activity_lawyer_login,container,false);
-        rootView.findViewById(R.id.signup_btn).setOnClickListener(view-> callBackHandler.openFragment(new LawyerSignupFragment()));
+        rootView.findViewById(R.id.signup_btn).setOnClickListener(view-> callBackHandler.openFragment(new LawyerSignupFragment(),LawyerSignupFragment.class.getName()));
         rootView.findViewById(R.id.login_btn).setOnClickListener(view->login());
         return rootView;
     }

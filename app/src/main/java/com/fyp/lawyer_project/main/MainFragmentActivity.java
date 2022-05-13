@@ -6,5 +6,7 @@ import com.fyp.lawyer_project.modal_classes.User;
 
 public abstract class MainFragmentActivity  extends FragmentActivity {
     public abstract void onUserLoggedIn(User user);
-    public abstract void openFragment(RootFragment fragment);
+    public abstract void openFragment(RootFragment fragment,String TAG);
+
+    public abstract void signOut();
 }

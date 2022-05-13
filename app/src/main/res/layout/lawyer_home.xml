@@ -36,10 +36,40 @@
             android:layout_height="0dip"
             app:layout_constraintTop_toBottomOf="@+id/topBarLayout"
             android:padding="15dip"
-
+            app:layout_constraintBottom_toBottomOf="parent"
             android:layout_marginTop="10dip"
-            >
 
+            >
+            <androidx.constraintlayout.utils.widget.ImageFilterView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/icon_refresh"
+                android:tint="@color/zm_green"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:padding="10dip"
+                android:id="@+id/refreshIcon"/>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.8dip"
+                android:background="@color/material_dynamic_neutral_variant20"
+                app:layout_constraintTop_toBottomOf="@+id/lawyer_profile_name"
+                android:layout_marginTop="3dip"
+                android:id="@+id/divider"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/appointmentLabel"
+                android:text="Appointments Requests"
+                android:textColor="@color/black"
+                android:background="@color/material_dynamic_neutral_variant95"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:paddingEnd="10dip"
+                android:paddingStart="10dip"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/divider"
+                app:layout_constraintBottom_toBottomOf="@+id/divider"
+                />
             <TextView
                 android:id="@+id/welcomeNote"
                 android:layout_width="wrap_content"
@@ -61,22 +91,64 @@
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/welcomeNote" />
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@+id/lawyer_profile_name"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginTop="50dip"
+                android:visibility="gone"
+                android:id="@+id/requestLoadingProgress"/>
 
-            <include
-                android:id="@+id/appointment_card"
-                layout="@layout/appointment_card"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/appointment_request_list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="30dip"
-                app:layout_constraintTop_toBottomOf="@+id/lawyer_profile_name" />
-
+                android:layout_marginTop="10dip"
+                app:layout_constraintBottom_toTopOf="@+id/uappointmentLabel"
+                app:layout_constraintTop_toBottomOf="@+id/appointmentLabel" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.8dip"
+                android:background="@color/material_dynamic_neutral_variant20"
+                app:layout_constraintTop_toBottomOf="@+id/appointment_request_list"
+                android:layout_marginTop="15dip"
+                android:id="@+id/divider2"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/uappointmentLabel"
+                android:text="Upcoming Appointments"
+                android:textColor="@color/black"
+                android:background="@color/material_dynamic_neutral_variant95"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:paddingEnd="10dip"
+                android:paddingStart="10dip"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/divider2"
+                app:layout_constraintBottom_toBottomOf="@+id/divider2"
+                />
             <androidx.recyclerview.widget.RecyclerView
                 android:layout_width="match_parent"
                 android:layout_height="0dip"
                 android:layout_marginTop="10dip"
+                android:id="@+id/upcomingAppointmentList"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/appointment_card" />
+                app:layout_constraintTop_toBottomOf="@+id/uappointmentLabel"
+                tools:layout_editor_absoluteX="15dp" />
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/appointmentLoadingProgress"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/appointment_request_list"
+                />
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.google.android.material.navigation.NavigationView
@@ -84,6 +156,7 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:id="@+id/navViewLawyer"
+        android:visibility="visible"
         app:headerLayout="@layout/drawer_user_header"
         app:menu="@menu/user_menu" />
 

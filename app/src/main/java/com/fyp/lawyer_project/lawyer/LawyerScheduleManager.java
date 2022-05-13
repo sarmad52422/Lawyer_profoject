@@ -98,7 +98,7 @@ public class LawyerScheduleManager extends RootFragment implements View.OnClickL
 
             } else {
                 selectedDays.add(dayView.getTag().toString());
-                ((CardView) view).setCardBackgroundColor(getResources().getColor(com.google.android.material.R.color.material_dynamic_primary50));
+                ((CardView) view).setCardBackgroundColor(getResources().getColor(R.color.material_dynamic_primary50));
                 view.setTag("Selected");
             }
         }

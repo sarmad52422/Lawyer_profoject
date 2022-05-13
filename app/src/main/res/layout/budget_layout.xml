@@ -143,16 +143,17 @@
             android:textAllCaps="false"
             android:textColor="#FFF"
             android:backgroundTint="@color/material_dynamic_primary50"/>
+
         <Button
+            android:id="@+id/searchLawyerBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/searchLawyerBtn"
-            android:text="Search"
-            android:layout_gravity="end"
             android:layout_alignParentEnd="true"
+            android:layout_gravity="end"
+            android:backgroundTint="@color/material_dynamic_primary50"
+            android:text="Search"
             android:textAllCaps="false"
-            android:textColor="#FFF"
-            android:backgroundTint="@color/material_dynamic_primary50"/>
+            android:textColor="#FFF" />
 
     </RelativeLayout>
 

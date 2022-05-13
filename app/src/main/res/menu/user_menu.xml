@@ -8,7 +8,12 @@
 
     <item android:id="@+id/case_req_btn"
         android:title="Case Requests"/>
+
     <item android:id="@+id/mng_schedules"
            android:title="Manage Schedules"/>
+    <item android:id="@+id/loginZoom"
+          android:title="Login Zoom"/>
+    <item android:id="@+id/signout"
+        android:title="Sign out"/>
 
 </menu>

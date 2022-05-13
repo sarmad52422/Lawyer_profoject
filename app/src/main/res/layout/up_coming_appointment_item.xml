@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:contentPadding="5dip"
+    android:layout_margin="10dip"
+    app:cardCornerRadius="7dip"
+    app:cardBackgroundColor="@color/material_dynamic_neutral_variant20">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_width="60dip"
+            android:layout_height="60dip"
+            android:src="@drawable/lawyer"
+            android:id="@+id/profileImage"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Client ID:"
+            app:layout_constraintStart_toEndOf="@+id/profileImage"
+            app:layout_constraintTop_toTopOf="parent"
+            android:id="@+id/clientIdLabel"
+            android:layout_marginTop="10dip"
+            android:textColor="#fff"
+            android:layout_marginStart="10dip"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toEndOf="@+id/clientIdLabel"
+            android:text="Name of client"
+            android:id="@+id/clientIdView"
+            android:textColor="@color/white"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="10dip"
+            app:layout_constraintTop_toTopOf="parent"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Date :"
+            app:layout_constraintStart_toEndOf="@+id/profileImage"
+            app:layout_constraintTop_toBottomOf="@+id/clientIdLabel"
+            android:id="@+id/dateLabel"
+            android:layout_marginTop="3dip"
+            android:textColor="#fff"
+            android:layout_marginStart="10dip"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toEndOf="@+id/clientIdLabel"
+            android:text="Monday 02 Feb 2022"
+            android:textColor="@color/white"
+            android:layout_marginTop="3dp"
+            android:id="@+id/appointmentDateView"
+            android:layout_marginStart="10dip"
+            app:layout_constraintTop_toBottomOf="@+id/clientIdLabel"/>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</com.google.android.material.card.MaterialCardView>

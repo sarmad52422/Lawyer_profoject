@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:ignore="HardcodedText"
+    android:layout_marginTop="10dip"
+    android:padding="10dip"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="10dip"
+        app:cardBackgroundColor="@color/cardview_dark_background"
+        >
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+
+        >
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_width="100dip"
+            android:layout_height="100dip"
+            android:src="@drawable/lawyer"
+            app:layout_constraintTop_toTopOf="parent"
+            android:id="@+id/lawyer_profile_image"
+            app:layout_constraintStart_toStartOf="parent"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textColor="#000000"
+            android:id="@+id/lawyerNameLabel"
+            android:text="Lawyer Name: "
+            app:layout_constraintStart_toEndOf="@+id/lawyer_profile_image"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="20dip"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:id="@+id/lawyerName"
+            android:text="SOpa Lawyer"
+            android:textColor="#000000"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/lawyerNameLabel"
+            android:layout_marginTop="20dip"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Date &amp; Time: "
+            android:textColor="#000000"
+            android:id="@+id/date_and_time_label"
+            app:layout_constraintTop_toBottomOf="@+id/lawyerNameLabel"
+            app:layout_constraintStart_toEndOf="@id/lawyer_profile_image"
+            android:layout_marginTop="10dip"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:text="202020202302020202"
+            android:id="@+id/appointmentDateAndTime"
+            app:layout_constraintStart_toEndOf="@+id/lawyer_profile_image"
+            app:layout_constraintTop_toBottomOf="@+id/date_and_time_label"
+            android:layout_marginTop="10dip"
+            />
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintTop_toBottomOf="@+id/appointmentDateAndTime"
+            app:layout_constraintStart_toEndOf="@+id/lawyer_profile_image">
+        <androidx.constraintlayout.utils.widget.ImageFilterView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/cancelAppointmentButton"
+            android:src="@drawable/common_google_signin_btn_icon_dark"
+
+            />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Cancel"
+                android:layout_gravity="center"
+                />
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintTop_toBottomOf="@+id/appointmentDateAndTime"
+            app:layout_constraintStart_toEndOf="@+id/lawyer_profile_image"
+            app:layout_constraintEnd_toEndOf="parent">
+            <androidx.constraintlayout.utils.widget.ImageFilterView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/markComplete"
+                android:layout_gravity="center"
+                android:src="@drawable/common_google_signin_btn_icon_dark"
+
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Mark Complete"
+                android:layout_gravity="center"
+                />
+        </androidx.appcompat.widget.LinearLayoutCompat>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
+</androidx.appcompat.widget.LinearLayoutCompat>

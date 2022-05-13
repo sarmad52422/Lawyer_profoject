@@ -31,7 +31,7 @@ public class LawyerProfile extends RootFragment {
     }
     private void initActions(){
         rootView.findViewById(R.id.back_btn).setOnClickListener(view->{
-            getParentFragmentManager().popBackStack();
+            getFragmentManager().popBackStack();
         });
         rootView.findViewById(R.id.save_profile_btn).setOnClickListener(view->saveProfileUpdates());
 

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:padding="10dip"
+    android:layout_height="match_parent">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Title he yeh"
+        android:textColor="@color/black"
+        android:layout_marginStart="10dip"
+        android:layout_toEndOf="@+id/icon"
+        android:id="@+id/title"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/title"
+        android:layout_toEndOf="@+id/icon"
+        android:layout_marginTop="10dip"
+        android:textColor="@color/black"
+        android:layout_marginStart="10dip"
+        android:text="Mesg he yeh hehehehehehehehe"
+        android:id="@+id/message"/>
+    <ImageView
+        android:layout_width="50dip"
+        android:layout_height="50dip"
+        android:src="@drawable/lawyer"
+        android:layout_alignParentStart="true"
+        android:id="@+id/icon"/>
+</RelativeLayout>

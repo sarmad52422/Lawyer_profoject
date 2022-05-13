@@ -2,8 +2,8 @@ package com.fyp.lawyer_project.modal_classes;
 
 public class Client extends User{
     private String caseType = "Farigh case";
-    public Client(String fullName, String phoneNumber,String emailAddress, String password,String caseType) {
-        super(fullName, emailAddress, password,phoneNumber);
+    public Client(String userType,String fullName, String phoneNumber,String emailAddress, String password,String caseType) {
+        super(userType,fullName, emailAddress, password,phoneNumber);
         this.caseType = caseType;
     }
 
@@ -16,7 +16,7 @@ public class Client extends User{
     }
 
     public Client(){
-        super("","","","");
+        super("","","","","");
 
     }
 }

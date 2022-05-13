@@ -36,8 +36,6 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_centerHorizontal="true"
                 android:layout_marginTop="17dp"
                 android:text="Click here to set picture"
                 android:textColor="#fff"
@@ -78,6 +76,7 @@
                 android:inputType="textEmailAddress"
                 android:textColor="#fff" />
 
+
             <EditText
                 android:id="@+id/phoneNumberField"
                 android:layout_width="302dp"
@@ -89,18 +88,27 @@
                 android:hint="Phone Number"
                 android:textColor="#fff" />
 
-            <EditText
+            <Spinner
                 android:id="@+id/practiceField"
                 android:layout_width="302dp"
-                android:layout_height="wrap_content"
+                android:entries="@array/practices_areas"
+                android:layout_height="40dip"
                 android:layout_marginStart="58dp"
                 android:layout_marginTop="42dp"
                 android:layout_marginEnd="62dp"
-                android:ems="10"
-                android:hint="Areas of Law Practice "
                 android:textColor="#fff" />
 
-
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dip"
+                android:layout_marginTop="42dip"
+                android:text="Select Price Range Per Case"
+                android:layout_gravity="center"
+                android:textAlignment="center"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/white"
+                android:id="@+id/priceRange"/>
 
 
             <EditText

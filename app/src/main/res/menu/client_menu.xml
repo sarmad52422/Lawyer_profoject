@@ -13,5 +13,7 @@
         android:title="Appointments"/>
     <item android:id="@+id/my_cases_progress"
         android:title="Cases Progress"/>
+    <item android:id="@+id/signout"
+            android:title="Sign out"/>
 
 </menu>

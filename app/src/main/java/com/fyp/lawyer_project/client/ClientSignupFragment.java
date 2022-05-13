@@ -17,6 +17,7 @@ import com.fyp.lawyer_project.R;
 import com.fyp.lawyer_project.modal_classes.Client;
 import com.fyp.lawyer_project.modal_classes.User;
 import com.fyp.lawyer_project.utils.FirebaseHelper;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class ClientSignupFragment extends Fragment {
     private View rootView;
@@ -47,12 +48,14 @@ public class ClientSignupFragment extends Fragment {
         String confirmPassword = ((EditText) rootView.findViewById(R.id.confirmfield)).getText().toString();
         if (!name.isEmpty() && !email.isEmpty() && !phoneNumber.isEmpty() && !password.isEmpty()) {
             if (password.equals(confirmPassword)) {
-                Client client = new Client(name, phoneNumber, email, password,"Koi case v ho sakda");
+                Client client = new Client(User.TYPE_CLIENT,name, phoneNumber, email, password,"Koi case v ho sakda");
                 FirebaseHelper.signUpUser(client, new ProgressDialog(rootView.getContext()),new FirebaseHelper.FirebaseActions() {
                     @Override
                     public void onSignupComplete(String status) {
                         Toast.makeText(getContext(),status,Toast.LENGTH_LONG).show();
                         Log.e(TAG,status);
+                        getFragmentManager().popBackStack();
+                        FirebaseAuth.getInstance().signOut();
                     }
                 });
             } else

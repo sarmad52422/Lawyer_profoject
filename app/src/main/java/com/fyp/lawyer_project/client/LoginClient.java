@@ -45,7 +45,7 @@ public class LoginClient extends RootFragment {
         });
     }
     private void signup(){
-        getParentFragmentManager().beginTransaction().addToBackStack(ClientSignupFragment.class.getName()).replace(R.id.container,new ClientSignupFragment()).commit();
+        getFragmentManager().beginTransaction().addToBackStack(ClientSignupFragment.class.getName()).replace(R.id.container,new ClientSignupFragment()).commit();
     }
 
     @Override

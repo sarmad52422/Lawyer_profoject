@@ -7,17 +7,40 @@ import java.io.Serializable;
 public  abstract class User{
     public static final String TYPE_LAWYER = "Lawyer";
     public static final String TYPE_CLIENT = "Client";
+    private String token;
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+    public String getUserId(){
+        return "_".concat(emailAddress.substring(0,emailAddress.indexOf('@')));
+    }
+    private String userType = "User";
     private static  User currentUser;
     private String fullName;
     private String emailAddress;
     private String password;
     private String phoneNumber;
-    public User(String fullName, String emailAddress, String password, String phoneNumber) {
+    public User(String userType,String fullName, String emailAddress, String password, String phoneNumber) {
         this.fullName = fullName;
         this.emailAddress = emailAddress;
         this.password = password;
         this.phoneNumber = phoneNumber;
+        this.userType = userType;
     }
+
+    public void setUserType(String userType) {
+        this.userType = userType;
+    }
+
+    public String getUserType() {
+        return userType;
+    }
+
     public User(){}
     public String getPhoneNumber() {
         return phoneNumber;

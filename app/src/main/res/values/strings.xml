@@ -1,3 +1,34 @@
 <resources>
     <string name="app_name">Lawyer_profoject</string>
+    <string name="custom_message_optional">Custom Message (Optional)</string>
+    <array name="days">
+        <item>Monday</item>
+        <item>Tuesday</item>
+        <item>Wednesday</item>
+        <item>Thursday</item>
+        <item>Friday</item>
+        <item>Saturday</item>
+        <item>Sunday</item>
+    </array>
+    <array name="practices_areas">
+        <item>Select area of your practice</item>
+        <item>Appellate Law</item>
+        <item>Banking &amp; Finance cases</item>
+        <item>Business Issues</item>
+        <item>Civil Rights</item>
+        <item>Company Lawyers</item>
+        <item>Copyright Law</item>
+        <item>Criminal/Defence Lawyer</item>
+        <item>Corporate Law</item>
+        <item>Family Law</item>
+        <item>General Issues</item>
+        <item>Immigration Advisors</item>
+        <item>Intellectual Property</item>
+        <item>Offshore Business Lawyers</item>
+        <item>Translation Services</item>
+
+    </array>
+    <array name="tempTimes">
+        <item>01:00 AM To 02:00 AM</item>
+    </array>
 </resources>

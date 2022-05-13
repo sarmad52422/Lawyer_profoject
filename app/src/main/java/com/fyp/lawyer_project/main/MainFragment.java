@@ -20,8 +20,8 @@ public class MainFragment extends RootFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.main_screen,container,false);
-        rootView.findViewById(R.id.lawyer_btn).setOnClickListener(view->callBackHandler.openFragment(new LawyerLogin()));
-        rootView.findViewById(R.id.client_btn).setOnClickListener(view->callBackHandler.openFragment(new LoginClient()));
+        rootView.findViewById(R.id.lawyer_btn).setOnClickListener(view->callBackHandler.openFragment(new LawyerLogin(),"LAWYER"));
+        rootView.findViewById(R.id.client_btn).setOnClickListener(view->callBackHandler.openFragment(new LoginClient(),"CLIENT"));
         return rootView;
     }
 
