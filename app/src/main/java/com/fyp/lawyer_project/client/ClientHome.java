@@ -162,7 +162,7 @@ public class ClientHome extends RootFragment implements LawyerPickerDialog.ListL
         }
         if (item.getItemId() == R.id.my_appointments) {
             MyAppointments appointments = new MyAppointments(rootView.getContext());
-            appointments.show();
+            appointments.show() ;
         }
         if (item.getItemId() == R.id.signout) {
             callBackHandel.signOut();

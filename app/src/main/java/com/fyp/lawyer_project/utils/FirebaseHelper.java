@@ -5,13 +5,13 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Build;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 
 import com.fyp.lawyer_project.modal_classes.Appointment;
 import com.fyp.lawyer_project.modal_classes.Client;
+import com.fyp.lawyer_project.modal_classes.ClientCase;
 import com.fyp.lawyer_project.modal_classes.Lawyer;
 import com.fyp.lawyer_project.modal_classes.Schedule;
 import com.fyp.lawyer_project.modal_classes.User;
@@ -25,15 +25,12 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.messaging.FirebaseMessaging;
-import com.google.firebase.messaging.RemoteMessage;
 
 import org.joda.time.DateTime;
 import org.joda.time.Interval;
 
-import java.text.Collator;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -43,6 +40,7 @@ public class FirebaseHelper {
     public static final String CLIENT_TABLE = "Users/Client";
     public static final String LAWYER_TABLE = "Users/Lawyer";
     public static final String APPOINTMENT_TABLE = "Appointments";
+    public static final String CASE_TABLE = "Cases";
 
     public static void loginUser(String email, String password, String userType, Dialog progressBarView, FirebaseActions actions) {
         FirebaseAuth auth = FirebaseAuth.getInstance();
@@ -66,21 +64,23 @@ public class FirebaseHelper {
             });
         }
     }
-    private static void updateUserToken(User user){
+
+    private static void updateUserToken(User user) {
         FirebaseMessaging.getInstance().getToken().addOnCompleteListener(new OnCompleteListener<String>() {
             @Override
             public void onComplete(@NonNull Task<String> task) {
                 String token = task.getResult();
                 user.setToken(token);
-                if(user.getUserType().equals(User.TYPE_CLIENT))
-                FirebaseDatabase.getInstance().getReference(CLIENT_TABLE).child(user.getUserId()).child("token").setValue(token);
-                else if(user.getUserType().equals(User.TYPE_LAWYER)){
+                if (user.getUserType().equals(User.TYPE_CLIENT))
+                    FirebaseDatabase.getInstance().getReference(CLIENT_TABLE).child(user.getUserId()).child("token").setValue(token);
+                else if (user.getUserType().equals(User.TYPE_LAWYER)) {
                     FirebaseDatabase.getInstance().getReference(LAWYER_TABLE).child(user.getUserId()).child("token").setValue(token);
 
                 }
             }
         });
     }
+
     public static void loadAppointmentRecord(String userName, FirebaseActions actions) {
         ArrayList<Appointment> appointments = new ArrayList<>();
         DatabaseReference database = FirebaseDatabase.getInstance().getReference(APPOINTMENT_TABLE);
@@ -104,16 +104,17 @@ public class FirebaseHelper {
         });
 
     }
-    public static void sendMeetingNotification(Context iContext, long meetingId, String meetingPassword, String clientId){
+
+    public static void sendMeetingNotification(Context iContext, long meetingId, String meetingPassword, String clientId) {
         String meetingTitle = "Meeting Join Request";
-        String meetingMsg = "Meeting ID: "+meetingId+"\n"+"Meeting Password: "+meetingPassword;
+        String meetingMsg = "Meeting ID: " + meetingId + "\n" + "Meeting Password: " + meetingPassword;
         FirebaseDatabase.getInstance().getReference(CLIENT_TABLE).child(clientId).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(snapshot.exists()){
-                    String token =  snapshot.child("token").getValue().toString();
-                    Log.e("Sender Token = ",token);
-                    Utilities.sendFCMPush(iContext,token,meetingTitle,meetingMsg);
+                if (snapshot.exists()) {
+                    String token = snapshot.child("token").getValue().toString();
+                    Log.e("Sender Token = ", token);
+                    Utilities.sendFCMPush(iContext, token, meetingTitle, meetingMsg);
                 }
             }
 
@@ -125,7 +126,8 @@ public class FirebaseHelper {
 
 
     }
-    public static void loadAppointmentRequests(String lawyerId,FirebaseActions actions){
+
+    public static void loadAppointmentRequests(String lawyerId, FirebaseActions actions) {
         ArrayList<Appointment> appointments = new ArrayList<>();
         DatabaseReference database = FirebaseDatabase.getInstance().getReference(APPOINTMENT_TABLE);
         database.orderByChild("lawyerID").equalTo(lawyerId).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -146,9 +148,11 @@ public class FirebaseHelper {
             }
         });
     }
-    public static void getClientData(String userId,FirebaseActions actions){
+
+    public static void getClientData(String userId, FirebaseActions actions) {
 
     }
+
     public static void signUpUser(User client, Dialog progressBarView, FirebaseActions actions) {
 
         FirebaseAuth auth = FirebaseAuth.getInstance();
@@ -239,12 +243,10 @@ public class FirebaseHelper {
                     } else {
                         actions.lawyerAvailabilityStatus("Available", 1);
                     }
-                }
-                else{
-                    actions.lawyerAvailabilityStatus("avaiable",1);
+                } else {
+                    actions.lawyerAvailabilityStatus("avaiable", 1);
                 }
             }
-
 
 
             @Override
@@ -264,11 +266,11 @@ public class FirebaseHelper {
             Date sDate = sdf.parse(selectedDate);
             Date aDate = sdf.parse(alreadyBookedAppointmentDate);
             Date interVal1Date = new Date(aDate.getTime() - (60 * 60 * 1000));
-            Date interval2Date = new Date(aDate.getTime()+(60*60*1000));
+            Date interval2Date = new Date(aDate.getTime() + (60 * 60 * 1000));
             DateTime start = new DateTime(interVal1Date);
             DateTime end = new DateTime(interval2Date);
             DateTime instance = new DateTime(sDate);
-            Interval interval = new Interval(start,end);
+            Interval interval = new Interval(start, end);
             return interval.contains(instance);
 
         } catch (ParseException ex) {
@@ -374,8 +376,9 @@ public class FirebaseHelper {
             }
         });
     }
-    public static final void updateAppointmentStatus(String appointmentId,String status){
-        DatabaseReference reference= FirebaseDatabase.getInstance().getReference(APPOINTMENT_TABLE).child(appointmentId);
+
+    public static final void updateAppointmentStatus(String appointmentId, String status) {
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference(APPOINTMENT_TABLE).child(appointmentId);
         reference.child("appointmentStatus").setValue(status);
 
     }
@@ -468,6 +471,79 @@ public class FirebaseHelper {
 
 
     }
+    public static void acceptCase(String caseId){
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference(CASE_TABLE).child(caseId);
+        reference.child("caseStatus").setValue("Accepted");
+
+    }
+    public static void rejectCase(String caseId){
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference(CASE_TABLE).child(caseId);
+        reference.child("caseStatus").setValue("Rejected");
+
+    }
+    public static void loadCases(String lawyerId, FirebaseActions actions) {
+        ArrayList<ClientCase> caseArrayList = new ArrayList<>();
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference(CASE_TABLE);
+        reference.orderByChild("lawyerID").equalTo(lawyerId).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot childSnap : snapshot.getChildren()) {
+                    ClientCase clientCase = childSnap.getValue(ClientCase.class);
+                    if (clientCase != null) {
+                        Log.e("Lawyer ID from case = ", clientCase.getLawyerID() + " " + clientCase.getLawyerComment());
+                        caseArrayList.add(clientCase);
+                    }
+                }
+                actions.onCasesLoaded(caseArrayList);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+    }
+    public static void loadClientsCases(String lawyerID,FirebaseActions actions){
+        ArrayList<ClientCase> caseArrayList = new ArrayList<>();
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference(CASE_TABLE);
+        reference.orderByChild("lawyerID").equalTo(lawyerID).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot s1:snapshot.getChildren()){
+                    ClientCase clientCase = s1.getValue(ClientCase.class);
+                    if(clientCase.getCaseStatus().equals(ClientCase.ACCEPTED)){
+                        caseArrayList.add(clientCase);
+                    }
+                }
+                actions.onCasesLoaded(caseArrayList);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+    }
+    public static void updateCaseProgress(String caseId,String updateMessage){
+
+    }
+    public static void markCompleteAppointment(String appointmentID) {
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference(APPOINTMENT_TABLE).child(appointmentID);
+        reference.child("appointmentStatus").setValue("Completed");
+    }
+
+    public static void cancelAppointment(String appointmentID) {
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference(APPOINTMENT_TABLE).child(appointmentID);
+        reference.child("appointmentStatus").setValue("Canceled");
+    }
+
+    public static void sendCaseRequest(ClientCase clientCase, FirebaseActions actions) {
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference(CASE_TABLE).child(clientCase.getClientID() + clientCase.getLawyerID());
+        reference.setValue(clientCase).addOnCompleteListener(task -> actions.onActionCompleted());
+
+    }
 
     public static void loadUser(String email, ProgressDialog dialog, FirebaseActions actions) {
         String userName = "_" + email.substring(0, email.indexOf("@"));
@@ -544,6 +620,14 @@ public class FirebaseHelper {
     }
 
     public interface FirebaseActions {
+
+        default void onCasesLoaded(ArrayList<ClientCase> caseArrayList){
+
+        }
+        default void onActionCompleted() {
+
+        }
+
         default void lawyerAvailabilityStatus(String status, int statusCode) {
         }
 

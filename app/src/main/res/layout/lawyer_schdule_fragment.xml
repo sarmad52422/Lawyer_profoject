@@ -18,7 +18,7 @@
         app:layout_constraintTop_toTopOf="parent" />
     <HorizontalScrollView
         android:layout_width="match_parent"
-        android:id="@+id/dayPickerContainer"
+        android:id="@+id/daypickerScroll"
         app:layout_constraintTop_toBottomOf="@+id/textTitle1"
         android:layout_height="wrap_content">
     <androidx.appcompat.widget.LinearLayoutCompat
@@ -26,7 +26,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dip"
         android:gravity="center"
-
+        android:id="@+id/dayPickerContainer"
         android:orientation="horizontal"
         android:paddingStart="10dip"
         android:paddingEnd="10dip"
@@ -51,7 +51,6 @@
                     android:layout_height="wrap_content"
                     android:textColor="#000000"
                     android:textStyle="bold"
-
                     android:text="Monday"/>
                 <TextView
                     android:layout_width="wrap_content"
@@ -276,7 +275,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dip"
-        app:layout_constraintTop_toBottomOf="@+id/dayPickerContainer"
+        app:layout_constraintTop_toBottomOf="@+id/daypickerScroll"
         android:background="#FFF"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

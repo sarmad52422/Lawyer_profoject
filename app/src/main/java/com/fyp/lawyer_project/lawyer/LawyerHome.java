@@ -23,6 +23,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.fyp.common.CaseRequestsDialog;
 import com.fyp.lawyer_project.R;
 import com.fyp.lawyer_project.main.MainFragment;
 import com.fyp.lawyer_project.main.MainFragmentActivity;
@@ -191,7 +192,16 @@ public class LawyerHome extends RootFragment implements NavigationView.OnNavigat
         } else if (item.getItemId() == R.id.signout) {
             FirebaseAuth.getInstance().signOut();
             callBackHandler.signOut();
-        } else if (item.getItemId() == R.id.loginZoom) {
+        }
+        else if(item.getItemId() == R.id.case_req_btn){
+            CaseRequestsDialog dialog = new CaseRequestsDialog(getContext(),currentUser.getUserId());
+            dialog.show();
+
+        }
+        else if(item.getItemId() == R.id.my_clients_btn){
+            callBackHandler.openFragment(new MyClientsFragment(),MyClientsFragment.class.getName());
+        }
+        else if (item.getItemId() == R.id.loginZoom) {
             if(ZoomSDK.getInstance().isLoggedIn())
             {
                 ZoomSDK.getInstance().logoutZoom();

@@ -1,17 +1,20 @@
 package com.fyp.lawyer_project.modal_classes;
 
-public class Lawyer extends User{
+public class Lawyer extends User {
     private String practiceArea = "Murder cases";
     private Schedule schedule;
     private double startPrice = 0.0d;
     private double endPrice = 0.0d;
 
-    public Lawyer(String userType,String fullName, String emailAddress, String password, String phoneNumber, String practiceArea, double startPrice, double endPrice) {
-        super(userType,fullName, emailAddress, password, phoneNumber);
+    public Lawyer(String userType, Schedule schedule, String fullName, String emailAddress, String password, String phoneNumber, String practiceArea, double startPrice, double endPrice) {
+        super(userType, fullName, emailAddress, password, phoneNumber);
         this.practiceArea = practiceArea;
         this.startPrice = startPrice;
         this.endPrice = endPrice;
-        schedule = new Schedule("12:00 PM","05:00 PM","Mon-Fri-Thur");
+        if (null == schedule)
+            this.schedule = new Schedule("01:00 PM", "03:00 PM", "Monday-Tuesday-Sunday");
+        else
+            this.schedule = schedule;
     }
 
     public void setStartPrice(double startPrice) {
@@ -30,14 +33,17 @@ public class Lawyer extends User{
         return endPrice;
     }
 
-    public Lawyer(){
+    public Lawyer() {
     }
-    public Schedule getSchedule(){
+
+    public Schedule getSchedule() {
         return schedule;
     }
-    public void setSchedule(Schedule schedule){
+
+    public void setSchedule(Schedule schedule) {
         this.schedule = schedule;
     }
+
     public String getPracticeArea() {
         return practiceArea;
     }

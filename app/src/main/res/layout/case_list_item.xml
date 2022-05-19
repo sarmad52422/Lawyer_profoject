@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="10dip"
+    app:cardBackgroundColor="@color/cardview_dark_background"
+    app:cardCornerRadius="10dip"
+    app:cardElevation="5dip"
+    app:contentPadding="10dip">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/userProfileImage"
+            android:layout_width="80dip"
+            android:layout_height="80dip"
+            android:src="@drawable/lawyer"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/clientNameLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dip"
+            android:layout_marginTop="10dip"
+            android:text="Client Name:"
+
+            android:textColor="@color/white"
+
+            app:layout_constraintStart_toEndOf="@+id/userProfileImage"
+            app:layout_constraintTop_toTopOf="parent"
+
+            />
+
+        <TextView
+            android:id="@+id/caseTitleLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dip"
+            android:layout_marginTop="10dip"
+            android:text="Case Title: "
+
+            android:textColor="@color/white"
+            app:layout_constraintStart_toEndOf="@+id/userProfileImage"
+            app:layout_constraintTop_toBottomOf="@+id/clientNameLabel" />
+
+        <TextView
+            android:id="@+id/clientName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dip"
+            android:layout_marginTop="10dip"
+            android:text="Sarmad Ali"
+
+            android:textColor="@color/white"
+            app:layout_constraintStart_toEndOf="@+id/clientNameLabel"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/caseTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dip"
+            android:layout_marginTop="10dip"
+            android:text="SOpa Case"
+
+            android:textColor="@color/white"
+            app:layout_constraintStart_toEndOf="@+id/caseTitleLabel"
+            app:layout_constraintTop_toBottomOf="@+id/clientNameLabel" />
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dip"
+            android:layout_marginTop="10dip"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="5dip"
+            android:id="@+id/viewDetailsButton"
+            app:layout_constraintStart_toEndOf="@+id/userProfileImage"
+            app:layout_constraintTop_toBottomOf="@+id/caseTitleLabel">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/googleg_disabled_color_18"
+
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dip"
+                android:text="View Details"
+                android:textColor="@color/white" />
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dip"
+            android:layout_marginTop="10dip"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="5dip"
+            android:id="@+id/acceptCaseButton"
+            app:layout_constraintStart_toEndOf="@+id/viewDetailsButton"
+            app:layout_constraintTop_toBottomOf="@+id/caseTitleLabel">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/googleg_disabled_color_18"
+
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dip"
+                android:text="Accept Case"
+                android:textColor="@color/white" />
+        </androidx.appcompat.widget.LinearLayoutCompat>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</com.google.android.material.card.MaterialCardView>

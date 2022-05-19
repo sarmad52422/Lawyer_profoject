@@ -1,21 +1,22 @@
 package com.fyp.lawyer_project.client;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentActivity;
 
 import com.fyp.lawyer_project.R;
-import com.fyp.lawyer_project.main.MainFragmentActivity;
 import com.fyp.lawyer_project.modal_classes.Appointment;
+import com.fyp.lawyer_project.modal_classes.ClientCase;
 import com.fyp.lawyer_project.modal_classes.Lawyer;
 import com.fyp.lawyer_project.modal_classes.User;
 import com.fyp.lawyer_project.utils.FirebaseHelper;
@@ -24,10 +25,11 @@ import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
 import com.google.android.material.timepicker.MaterialTimePicker;
 import com.google.android.material.timepicker.TimeFormat;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
@@ -52,6 +54,7 @@ public class DetailLawyerView extends BottomSheetDialog {
         ((TextView) findViewById(R.id.workingTime)).setText(lawyer.getSchedule().getFromTime() + " - " + lawyer.getSchedule().getToTime());
         findViewById(R.id.lawyerDetailCloseButton).setOnClickListener(view -> dismiss());
         findViewById(R.id.appointment_booking_btn).setOnClickListener(view -> showAppointmentBookingDialog());
+        findViewById(R.id.submitCaseRequest).setOnClickListener(new AppointmentDialogClickListener());
 
     }
 
@@ -60,6 +63,7 @@ public class DetailLawyerView extends BottomSheetDialog {
         findViewById(R.id.date_selection).setOnClickListener(new AppointmentDialogClickListener());
         findViewById(R.id.timeSlotSelector).setOnClickListener(new AppointmentDialogClickListener());
         findViewById(R.id.sendAppointmentBtn).setOnClickListener(new AppointmentDialogClickListener());
+
 
 
     }
@@ -75,8 +79,11 @@ public class DetailLawyerView extends BottomSheetDialog {
                 showTimePicker(view);
             } else if (view.getId() == R.id.sendAppointmentBtn) {
                 sendAppointment();
+            } else if (view.getId() == R.id.submitCaseRequest) {
+                showCaseSubmissionDialog();
             }
         }
+
 
         private void sendAppointment() {
             String date = ((TextView) findViewById(R.id.date_selection)).getText().toString();
@@ -145,27 +152,37 @@ public class DetailLawyerView extends BottomSheetDialog {
             }
         });
     }
+    private void showCaseSubmissionDialog(){
+        String clientEmail = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+        Dialog dialog = new Dialog(getContext());
+        dialog.setContentView(R.layout.case_request_dialog);
+        dialog.show();
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
-    private void bookAppointmentForCurrentUser() {
-        String fromTime = lawyer.getSchedule().getFromTime();
-        String toTime = lawyer.getSchedule().getToTime();
-        String[] workingDays = lawyer.getSchedule().getWorkingDays().split("-");
-        try {
-            int hour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
-            int minuts = Calendar.getInstance().get(Calendar.MINUTE);
-            @SuppressLint("SimpleDateFormat") Date d = (new SimpleDateFormat("hh:mm a")).parse(fromTime);
-            Date current = (new SimpleDateFormat("H:mm", Locale.US)).parse(hour + ":" + minuts);
-
-//
-//            String tw =new SimpleDateFormat("hh:mm a").format(d);
-//            String stringTimeAv =new SimpleDateFormat("KK:mm a").format(curntTime);
-//            Toast.makeText(getContext(),tw+" yeh avail time he",Toast.LENGTH_LONG).show();
-//            Toast.makeText(getContext(),stringTimeAv+" yeh current time he",Toast.LENGTH_LONG).show();
-
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-//        FirebaseHelper.bookMeetingIfAvaliable()
+        dialog.findViewById(R.id.sendCaseRequestBtn).setOnClickListener(view->{
+            String caseTitle = ((EditText)dialog.findViewById(R.id.caseTitleField)).getText().toString();
+            String caseMessage = ((EditText)dialog.findViewById(R.id.caseDetailsField)).getText().toString();
+            String budget = ((EditText)dialog.findViewById(R.id.caseBudgetField)).getText().toString();
+            double dBudget = Double.parseDouble(budget.trim());
+            String lawyerId = lawyer.getUserId();
+            String clientID = "_"+clientEmail.substring(0,clientEmail.indexOf('@'));
+            ClientCase clientCase = new ClientCase(caseTitle,caseMessage,lawyerId,clientID,"Not Accepted","Start","Nothing","no lawyer comment",dBudget);
+            ProgressBar progressBar = new ProgressBar(getContext());
+            dialog.setContentView(progressBar);
+            FirebaseHelper.sendCaseRequest(clientCase, new FirebaseHelper.FirebaseActions() {
+                @Override
+                public void onActionCompleted() {
+                    dialog.dismiss();
+                    DetailLawyerView.this.dismiss();
+                    Toast.makeText(getContext(),"Request Sent Successfully",Toast.LENGTH_LONG).show();
+                }
+            });
+        });
+        dialog.show();
     }
+
+
+
+
 
 }

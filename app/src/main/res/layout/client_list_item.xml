@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <ImageView
+        android:layout_width="100dip"
+        android:layout_height="100dip"
+        android:src="@drawable/lawyer"
+        app:layout_constraintBaseline_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:id="@+id/clientProfileImage"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/clientIdLabel"
+        android:text="Client ID: "
+        app:layout_constraintStart_toEndOf="@+id/clientProfileImage"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginStart="10dip"
+        android:layout_marginTop="10dip"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="_sarmad"
+        app:layout_constraintStart_toEndOf="@+id/clientIdLabel"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="10dip"
+        android:layout_marginStart="5dip"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/caseTitleLabel"
+        android:text="Case Title: "
+        android:layout_marginStart="10dip"
+        app:layout_constraintStart_toEndOf="@+id/clientProfileImage"
+        app:layout_constraintTop_toBottomOf="@+id/clientIdLabel"
+        android:layout_marginTop="10dip"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Case title goes here"
+        android:id="@+id/caseTitleField"
+        app:layout_constraintTop_toBottomOf="@+id/clientIdLabel"
+        app:layout_constraintStart_toEndOf="@+id/caseTitleLabel"
+        android:layout_marginTop="10dip"
+        android:layout_marginStart="5dip"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
