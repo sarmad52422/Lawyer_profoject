@@ -1,6 +1,8 @@
 package com.fyp.lawyer_project.client;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,6 +22,7 @@ import com.fyp.lawyer_project.R;
 import com.fyp.lawyer_project.main.MainFragmentActivity;
 import com.fyp.lawyer_project.main.RootFragment;
 import com.fyp.lawyer_project.modal_classes.Client;
+import com.fyp.lawyer_project.modal_classes.ClientCase;
 import com.fyp.lawyer_project.modal_classes.Lawyer;
 import com.fyp.lawyer_project.modal_classes.User;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -38,6 +41,7 @@ public class ClientHome extends RootFragment implements LawyerPickerDialog.ListL
     private NavigationView navView;
     private MainFragmentActivity callBackHandel;
     private String msg = null;
+    private String title = null;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -62,17 +66,30 @@ public class ClientHome extends RootFragment implements LawyerPickerDialog.ListL
     private void openMessageDialog(){
         if(msg == null)
             return;
-        AlertDialog.Builder msgDialog = new AlertDialog.Builder(rootView.getContext());
-        msgDialog.setTitle("Message Alert");
-        msgDialog.setMessage(msg);
-        msgDialog.setPositiveButton("Join Meeting",((dialogInterface, i) -> {
-            String [] id_pass = getIdPasswordFromNotificationMessage(msg);
-            joinMeeting(id_pass[0],id_pass[1]);
-            rootView.findViewById(R.id.notifyIconAlert).setVisibility(View.GONE);
+        if(title.equals(ClientCase.CASE_PROGRESS)){
+            AlertDialog.Builder msgDialog = new AlertDialog.Builder(rootView.getContext());
+            msgDialog.setTitle("Message Alert");
+            msgDialog.setMessage(msg);
+            msgDialog.setPositiveButton("View Message", ((dialogInterface, i) -> {
+                rootView.findViewById(R.id.notifyIconAlert).setVisibility(View.GONE);
 
-        }));
-        msgDialog.setNegativeButton("No",((dialogInterface, i) -> dialogInterface.dismiss()));
-        msgDialog.show();
+            }));
+            msgDialog.setNegativeButton("No", ((dialogInterface, i) -> dialogInterface.dismiss()));
+            msgDialog.show();
+        }
+        else {
+            AlertDialog.Builder msgDialog = new AlertDialog.Builder(rootView.getContext());
+            msgDialog.setTitle("Message Alert");
+            msgDialog.setMessage(msg);
+            msgDialog.setPositiveButton("Join Meeting", ((dialogInterface, i) -> {
+                String[] id_pass = getIdPasswordFromNotificationMessage(msg);
+                joinMeeting(id_pass[0], id_pass[1]);
+                rootView.findViewById(R.id.notifyIconAlert).setVisibility(View.GONE);
+
+            }));
+            msgDialog.setNegativeButton("No", ((dialogInterface, i) -> dialogInterface.dismiss()));
+            msgDialog.show();
+        }
     }
     public void showMeetingConfirmationDialog(String meetingID, String meetingPassword) {
         AlertDialog.Builder dialog = new AlertDialog.Builder(rootView.getContext());
@@ -100,14 +117,19 @@ public class ClientHome extends RootFragment implements LawyerPickerDialog.ListL
     }
 
     public void showNotification(String message, String TYPE) {
+        title = TYPE;
         if (TYPE.equals("meeting")) {
-            getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    rootView.findViewById(R.id.notifyIconAlert).setVisibility(View.VISIBLE);
-                    msg = message;
-                }
+            getActivity().runOnUiThread(() -> {
+                rootView.findViewById(R.id.notifyIconAlert).setVisibility(View.VISIBLE);
+                msg = message;
             });
+        }
+        else if(TYPE.equals(ClientCase.CASE_PROGRESS)){
+            getActivity().runOnUiThread(()->{
+                rootView.findViewById(R.id.notifyIconAlert).setVisibility(View.VISIBLE);
+                msg = message;
+            });
+
         }
     }
 
@@ -162,11 +184,16 @@ public class ClientHome extends RootFragment implements LawyerPickerDialog.ListL
         }
         if (item.getItemId() == R.id.my_appointments) {
             MyAppointments appointments = new MyAppointments(rootView.getContext());
-            appointments.show() ;
+            appointments.show();
+        }
+        else if(item.getItemId() == R.id.my_cases_progress){
+            callBackHandel.openFragment(new MyCases(),MyCases.class.getName());
+
         }
         if (item.getItemId() == R.id.signout) {
             callBackHandel.signOut();
         }
         return true;
     }
+
 }

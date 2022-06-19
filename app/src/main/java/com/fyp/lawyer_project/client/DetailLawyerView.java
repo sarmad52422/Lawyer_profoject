@@ -31,6 +31,7 @@ import com.google.firebase.auth.FirebaseUser;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
 
 public class DetailLawyerView extends BottomSheetDialog {
@@ -166,7 +167,7 @@ public class DetailLawyerView extends BottomSheetDialog {
             double dBudget = Double.parseDouble(budget.trim());
             String lawyerId = lawyer.getUserId();
             String clientID = "_"+clientEmail.substring(0,clientEmail.indexOf('@'));
-            ClientCase clientCase = new ClientCase(caseTitle,caseMessage,lawyerId,clientID,"Not Accepted","Start","Nothing","no lawyer comment",dBudget);
+            ClientCase clientCase = new ClientCase(caseTitle,caseMessage,lawyerId,clientID,"Not Accepted",null,"Nothing","no lawyer comment",dBudget);
             ProgressBar progressBar = new ProgressBar(getContext());
             dialog.setContentView(progressBar);
             FirebaseHelper.sendCaseRequest(clientCase, new FirebaseHelper.FirebaseActions() {

@@ -42,12 +42,14 @@ public class Utilities {
         JSONObject objData = null;
         JSONObject dataobjData = null;
         try {
+            Log.e("Title gya heheh","Title he = "+titleMsg);
             obj = new JSONObject();
             objData = new JSONObject();
             objData.put("body", msgBody);
+            objData.put("title",titleMsg);
             dataobjData = new JSONObject();
             dataobjData.put("text", msgBody);
-            dataobjData.put("title", "hellow");
+            dataobjData.put("title", titleMsg);
             obj.put("to", receiverToken);
             obj.put("notification", objData);
             obj.put("data", dataobjData);

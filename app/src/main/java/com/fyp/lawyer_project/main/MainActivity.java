@@ -13,6 +13,7 @@ import com.fyp.lawyer_project.R;
 import com.fyp.lawyer_project.client.ClientHome;
 import com.fyp.lawyer_project.lawyer.LawyerHome;
 import com.fyp.lawyer_project.modal_classes.Client;
+import com.fyp.lawyer_project.modal_classes.ClientCase;
 import com.fyp.lawyer_project.modal_classes.Lawyer;
 import com.fyp.lawyer_project.modal_classes.User;
 import com.fyp.lawyer_project.utils.FirebaseHelper;
@@ -35,6 +36,7 @@ public class MainActivity extends MainFragmentActivity {
     public static boolean active = false;
     private boolean meetingDisconnecting = false;
     public static MainActivity mainActivity;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -104,19 +106,26 @@ public class MainActivity extends MainFragmentActivity {
 
 
     }
-    public  void showMeetingNotification(String notificationMessage){
+
+    public void showMeetingNotification(String notificationMessage, String title) {
         RootFragment fragment = (RootFragment) getSupportFragmentManager().findFragmentByTag("CLIENT");
-        if(fragment != null && fragment.isVisible()){;
-            ((ClientHome)fragment).showNotification(notificationMessage,"meeting");
+        if (fragment != null && fragment.isVisible()) {
+            if (title.equals(ClientCase.CASE_PROGRESS)) {
+                ((ClientHome)fragment).showNotification(notificationMessage,title);
+
+            } else {
+                ((ClientHome) fragment).showNotification(notificationMessage, "meeting");
+            }
         }
 
     }
+
     private void askForMeetingIfFragmentIsOpen() {
         RootFragment fragment = (RootFragment) getSupportFragmentManager().findFragmentByTag("CLIENT");
 
         if (fragment != null && fragment.isVisible() && !meetingDisconnecting) {
 
-            ((ClientHome) fragment).showMeetingConfirmationDialog(meetingID,meetingPassword);
+            ((ClientHome) fragment).showMeetingConfirmationDialog(meetingID, meetingPassword);
         }
 
     }

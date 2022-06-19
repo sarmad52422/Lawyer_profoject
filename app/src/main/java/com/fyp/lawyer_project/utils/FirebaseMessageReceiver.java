@@ -28,8 +28,9 @@ public class FirebaseMessageReceiver extends FirebaseMessagingService {
     @Override
     public void onMessageReceived(@NonNull RemoteMessage message) {
         if (message.getNotification() != null) {
+            Log.e("Remote msg = ",message.getNotification().getTitle()+" title agya");
             if(MainActivity.active){
-                MainActivity.mainActivity.showMeetingNotification(message.getNotification().getBody());
+                MainActivity.mainActivity.showMeetingNotification(message.getNotification().getBody(),message.getNotification().getTitle());
             }
             else {
                 showNotification(message.getNotification().getTitle(), message.getNotification().getBody());
