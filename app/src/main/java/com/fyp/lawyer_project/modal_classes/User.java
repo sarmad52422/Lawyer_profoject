@@ -7,15 +7,39 @@ import java.io.Serializable;
 public  abstract class User{
     public static final String TYPE_LAWYER = "Lawyer";
     public static final String TYPE_CLIENT = "Client";
-    private String token;
 
+    @Override
+    public String toString() {
+        return "User{" +
+                "User ID = "+getUserId()+"\n"+
+                ", userStatus=" + userStatus +
+                ", userType='" + userType + '\'' +
+                ", fullName='" + fullName + '\'' +
+                ", emailAddress='" + emailAddress + '\'' +
+                ", password='" + password + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                '}';
+    }
+
+    private String token;
+    public static final int NOT_APPROVED = 403;
+    public static final int APPROVED = 200;
     public String getToken() {
         return token;
     }
-
+    private int userStatus = NOT_APPROVED;
     public void setToken(String token) {
         this.token = token;
     }
+
+    public int getUserStatus() {
+        return userStatus;
+    }
+
+    public void setUserStatus(int userStatus) {
+        this.userStatus = userStatus;
+    }
+
     public String getUserId(){
         return "_".concat(emailAddress.substring(0,emailAddress.indexOf('@')));
     }

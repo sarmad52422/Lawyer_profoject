@@ -8,11 +8,13 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:id="@+id/usernamefield"
+    android:hint="Zoom Email"
     app:layout_constraintTop_toTopOf="parent"/>
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/passwfield"
+        android:hint="Zoom Password"
         app:layout_constraintTop_toBottomOf="@+id/usernamefield"
         android:layout_marginTop="20dip"/>
     <androidx.appcompat.widget.LinearLayoutCompat

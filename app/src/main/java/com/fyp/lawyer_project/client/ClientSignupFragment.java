@@ -28,16 +28,8 @@ public class ClientSignupFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.activity_client_signup, container, false);
         rootView.findViewById(R.id.submit_details_btn).setOnClickListener(view -> signup());
-        listUsers();
+
         return rootView;
-    }
-    private void listUsers(){
-        FirebaseHelper.listUsers(User.TYPE_LAWYER,new FirebaseHelper.FirebaseActions() {
-            @Override
-            public void onUserFound(User user) {
-                Log.e(TAG,user.getEmailAddress());
-            }
-        });
     }
 
     private void signup() {

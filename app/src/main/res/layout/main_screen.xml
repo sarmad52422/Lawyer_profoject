@@ -42,4 +42,17 @@
         android:textAllCaps="false"
         android:textColor="#FFF"
         android:textSize="16sp" />
+    <Button
+        android:id="@+id/admin_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:layout_marginStart="34dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="30dp"
+        android:background="@drawable/custom_button_login"
+        android:text="Admin"
+        android:textAllCaps="false"
+        android:textColor="#FFF"
+        android:textSize="16sp" />
 </LinearLayout>

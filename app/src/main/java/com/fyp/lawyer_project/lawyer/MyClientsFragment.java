@@ -103,8 +103,14 @@ public class MyClientsFragment extends RootFragment {
         FirebaseHelper.loadClientsCases(lawyerId, new FirebaseHelper.FirebaseActions() {
             @Override
             public void onCasesLoaded(ArrayList<ClientCase> caseArrayList) {
-                ClientsAdapter adapter = new ClientsAdapter(caseArrayList);
-                recyclerView.setAdapter(adapter);
+                if(caseArrayList.isEmpty()){
+                    recyclerView.setVisibility(View.GONE);
+                    rootView.findViewById(R.id.no_cl).setVisibility(View.VISIBLE);
+                }
+                else {
+                    ClientsAdapter adapter = new ClientsAdapter(caseArrayList);
+                    recyclerView.setAdapter(adapter);
+                }
             }
         });
     }

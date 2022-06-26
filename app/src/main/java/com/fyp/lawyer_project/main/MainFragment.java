@@ -10,6 +10,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.fyp.lawyer_project.R;
+import com.fyp.lawyer_project.admin.AdminFragment;
 import com.fyp.lawyer_project.client.LoginClient;
 import com.fyp.lawyer_project.lawyer.LawyerLogin;
 
@@ -22,6 +23,7 @@ public class MainFragment extends RootFragment {
         rootView = inflater.inflate(R.layout.main_screen,container,false);
         rootView.findViewById(R.id.lawyer_btn).setOnClickListener(view->callBackHandler.openFragment(new LawyerLogin(),"LAWYER"));
         rootView.findViewById(R.id.client_btn).setOnClickListener(view->callBackHandler.openFragment(new LoginClient(),"CLIENT"));
+        rootView.findViewById(R.id.admin_btn).setOnClickListener(view->callBackHandler.openFragment(new AdminFragment(),"ADMIN"));
         return rootView;
     }
 

@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,6 +17,7 @@ import androidx.annotation.RequiresApi;
 import androidx.cardview.widget.CardView;
 
 import com.fyp.lawyer_project.R;
+import com.fyp.lawyer_project.main.MainActivity;
 import com.fyp.lawyer_project.main.MainFragmentActivity;
 import com.fyp.lawyer_project.main.RootFragment;
 import com.fyp.lawyer_project.modal_classes.Schedule;
@@ -83,7 +85,13 @@ public class LawyerScheduleManager extends RootFragment implements View.OnClickL
 
             String fromTime = ((TextView) rootView.findViewById(R.id.fromTime)).getText().toString();
             String toTime = ((TextView) rootView.findViewById(R.id.toTime)).getText().toString();
-            FirebaseHelper.updateLawyerSchedule(new Schedule(fromTime, toTime, days.toString().trim()));
+            FirebaseHelper.updateLawyerSchedule(new Schedule(fromTime, toTime, days.toString().trim()), new FirebaseHelper.FirebaseActions() {
+                @Override
+                public void onActionCompleted() {
+                    Toast.makeText(rootView.getContext(), "Schedule Updated",Toast.LENGTH_LONG).show();
+
+                }
+            });
 
         }
     }
