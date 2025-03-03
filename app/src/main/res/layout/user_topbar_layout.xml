@@ -25,7 +25,7 @@
                 android:layout_height="10dip"
                 android:id="@+id/notifyIconAlert"
                 android:visibility="gone"
-                android:src="@color/zm_notification_background_green"/>
+                android:src="#00FF00"/>
         </RelativeLayout>
         <androidx.constraintlayout.utils.widget.ImageFilterView
             android:layout_width="wrap_content"

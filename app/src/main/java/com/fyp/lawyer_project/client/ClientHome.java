@@ -1,7 +1,6 @@
 package com.fyp.lawyer_project.client;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,6 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -28,12 +28,11 @@ import com.fyp.lawyer_project.modal_classes.User;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.navigation.NavigationView;
 
-import java.util.ArrayList;
+import org.jitsi.meet.sdk.JitsiMeetActivity;
+import org.jitsi.meet.sdk.JitsiMeetConferenceOptions;
 
-import us.zoom.sdk.JoinMeetingOptions;
-import us.zoom.sdk.JoinMeetingParams;
-import us.zoom.sdk.MeetingService;
-import us.zoom.sdk.ZoomSDK;
+import java.net.URL;
+import java.util.ArrayList;
 
 public class ClientHome extends RootFragment implements LawyerPickerDialog.ListLoader, LawyersListAdapter.OnItemClickListener, NavigationView.OnNavigationItemSelectedListener {
     private View rootView;
@@ -42,6 +41,7 @@ public class ClientHome extends RootFragment implements LawyerPickerDialog.ListL
     private MainFragmentActivity callBackHandel;
     private String msg = null;
     private String title = null;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -50,55 +50,53 @@ public class ClientHome extends RootFragment implements LawyerPickerDialog.ListL
         initHomeScreen();
 
         return rootView;
-
     }
 
     private void initClickListener() {
         if (getArguments() != null) {
             String meetingId = getArguments().getString("ID");
-            String meetingPassword = getArguments().getString("PASSWORD");
-            showMeetingConfirmationDialog(meetingId, meetingPassword);
-
+            String meetingPassword = getArguments().getString("PASSWORD"); // Ignored by Jitsi
+            showMeetingConfirmationDialog(meetingId);
         }
         rootView.findViewById(R.id.drawer_btn).setOnClickListener(view -> openDrawer());
-        rootView.findViewById(R.id.notifyIcon).setOnClickListener(view->openMessageDialog());
+        rootView.findViewById(R.id.notifyIcon).setOnClickListener(view -> openMessageDialog());
     }
-    private void openMessageDialog(){
-        if(msg == null)
-            return;
-        if(title.equals(ClientCase.CASE_PROGRESS)){
-            AlertDialog.Builder msgDialog = new AlertDialog.Builder(rootView.getContext());
-            msgDialog.setTitle("Message Alert");
-            msgDialog.setMessage(msg);
-            msgDialog.setPositiveButton("View Message", ((dialogInterface, i) -> {
-                rootView.findViewById(R.id.notifyIconAlert).setVisibility(View.GONE);
 
-            }));
-            msgDialog.setNegativeButton("No", ((dialogInterface, i) -> dialogInterface.dismiss()));
-            msgDialog.show();
-        }
-        else {
+    private void openMessageDialog() {
+        if (msg == null) return;
+
+        if (title.equals(ClientCase.CASE_PROGRESS)) {
             AlertDialog.Builder msgDialog = new AlertDialog.Builder(rootView.getContext());
             msgDialog.setTitle("Message Alert");
             msgDialog.setMessage(msg);
-            msgDialog.setPositiveButton("Join Meeting", ((dialogInterface, i) -> {
+            msgDialog.setPositiveButton("View Message", (dialogInterface, i) -> {
+                rootView.findViewById(R.id.notifyIconAlert).setVisibility(View.GONE);
+            });
+            msgDialog.setNegativeButton("No", (dialogInterface, i) -> dialogInterface.dismiss());
+            msgDialog.show();
+        } else {
+            AlertDialog.Builder msgDialog = new AlertDialog.Builder(rootView.getContext());
+            msgDialog.setTitle("Message Alert");
+            msgDialog.setMessage(msg);
+            msgDialog.setPositiveButton("Join Meeting", (dialogInterface, i) -> {
                 String[] id_pass = getIdPasswordFromNotificationMessage(msg);
-                joinMeeting(id_pass[0], id_pass[1]);
+                joinMeeting(id_pass[0]); // Only use meetingId
                 rootView.findViewById(R.id.notifyIconAlert).setVisibility(View.GONE);
-
-            }));
-            msgDialog.setNegativeButton("No", ((dialogInterface, i) -> dialogInterface.dismiss()));
+            });
+            msgDialog.setNegativeButton("No", (dialogInterface, i) -> dialogInterface.dismiss());
             msgDialog.show();
         }
     }
-    public void showMeetingConfirmationDialog(String meetingID, String meetingPassword) {
+
+    public void showMeetingConfirmationDialog(String meetingID) {
         AlertDialog.Builder dialog = new AlertDialog.Builder(rootView.getContext());
         dialog.setTitle("Meeting");
-        dialog.setMessage("Start Meeting?");
-        dialog.setPositiveButton("Yes", (dialogInterface, i) -> joinMeeting(meetingID, meetingPassword));
-        dialog.setNegativeButton("NO", (dialogInterface, i) -> dialogInterface.dismiss());
+        dialog.setMessage("Join Meeting?");
+        dialog.setPositiveButton("Yes", (dialogInterface, i) -> joinMeeting(meetingID));
+        dialog.setNegativeButton("No", (dialogInterface, i) -> dialogInterface.dismiss());
         dialog.show();
     }
+
     private String[] getIdPasswordFromNotificationMessage(String msgValue) {
         String[] id_pass = msgValue.split("\n");
         return new String[]{
@@ -106,14 +104,26 @@ public class ClientHome extends RootFragment implements LawyerPickerDialog.ListL
                 id_pass[1].substring(id_pass[1].lastIndexOf(" ")).trim()
         };
     }
-    private void joinMeeting(String meetingId, String meetingPassword) {
 
-        MeetingService meetingService = ZoomSDK.getInstance().getMeetingService();
-        JoinMeetingOptions options = new JoinMeetingOptions();
-        JoinMeetingParams params = new JoinMeetingParams();
-        params.meetingNo = meetingId;
-        params.password = meetingPassword;
-        meetingService.joinMeetingWithParams(rootView.getContext(), params, options);
+    private void joinMeeting(String meetingId) {
+        try {
+            // Use the meetingId as the room name (or adjust based on LawyerHome's format)
+            String roomName = meetingId; // Expecting "LawyerClientMeeting_<clientId>_<timestamp>" from LawyerHome
+
+            // Configure Jitsi options
+            JitsiMeetConferenceOptions options = new JitsiMeetConferenceOptions.Builder()
+                    .setServerURL(new URL("https://meet.jit.si")) // Public server
+                    .setRoom(roomName) // Use the provided meetingId as room
+                    .setAudioMuted(false)
+                    .setVideoMuted(false)
+                    .build();
+
+            // Launch the meeting
+            JitsiMeetActivity.launch(getContext(), options);
+        } catch (Exception e) {
+            Log.e("Jitsi Error", e.getMessage());
+            Toast.makeText(getContext(), "Failed to join meeting: " + e.getMessage(), Toast.LENGTH_LONG).show();
+        }
     }
 
     public void showNotification(String message, String TYPE) {
@@ -123,13 +133,11 @@ public class ClientHome extends RootFragment implements LawyerPickerDialog.ListL
                 rootView.findViewById(R.id.notifyIconAlert).setVisibility(View.VISIBLE);
                 msg = message;
             });
-        }
-        else if(TYPE.equals(ClientCase.CASE_PROGRESS)){
-            getActivity().runOnUiThread(()->{
+        } else if (TYPE.equals(ClientCase.CASE_PROGRESS)) {
+            getActivity().runOnUiThread(() -> {
                 rootView.findViewById(R.id.notifyIconAlert).setVisibility(View.VISIBLE);
                 msg = message;
             });
-
         }
     }
 
@@ -151,12 +159,6 @@ public class ClientHome extends RootFragment implements LawyerPickerDialog.ListL
         ((TextView) rootView.findViewById(R.id.lawyer_profile_name)).setText(currentUser.getFullName());
         ((TextView) rootView.findViewById(R.id.user_last_name)).setText(currentUser.getLastName());
         ((TextView) header.findViewById(R.id.drawer_user_namme)).setText(currentUser.getFullName());
-
-
-    }
-
-    private void initClickActions() {
-
     }
 
     @Override
@@ -185,15 +187,12 @@ public class ClientHome extends RootFragment implements LawyerPickerDialog.ListL
         if (item.getItemId() == R.id.my_appointments) {
             MyAppointments appointments = new MyAppointments(rootView.getContext());
             appointments.show();
-        }
-        else if(item.getItemId() == R.id.my_cases_progress){
-            callBackHandel.openFragment(new MyCases(),MyCases.class.getName());
-
+        } else if (item.getItemId() == R.id.my_cases_progress) {
+            callBackHandel.openFragment(new MyCases(), MyCases.class.getName());
         }
         if (item.getItemId() == R.id.signout) {
             callBackHandel.signOut();
         }
         return true;
     }
-
 }

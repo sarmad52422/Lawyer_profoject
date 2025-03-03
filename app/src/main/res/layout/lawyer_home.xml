@@ -43,8 +43,8 @@
             <androidx.constraintlayout.utils.widget.ImageFilterView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/icon_refresh"
-                android:tint="@color/zm_green"
+                android:src="@android:drawable/ic_media_rew"
+                android:tint="#00FF00"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 android:padding="10dip"

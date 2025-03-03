@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -43,6 +44,7 @@ public class MyCases extends RootFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.myclients_layout, container, false);
         initClientList();
+
         return rootView;
     }
 
@@ -81,6 +83,7 @@ public class MyCases extends RootFragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(rootView.getContext()));
         String email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
         String userID = "_" + email.substring(0, email.indexOf('@'));
+        Toast.makeText(rootView.getContext(),userID,Toast.LENGTH_LONG).show();
         FirebaseHelper.loadCasesByUser(userID, new FirebaseHelper.FirebaseActions() {
             @Override
             public void onCasesLoaded(ArrayList<ClientCase> caseArrayList) {

@@ -99,6 +99,7 @@ public class DetailLawyerView extends BottomSheetDialog {
             try {
                 Date d = dateFormat.parse(date + " " + time);
                 String df = new SimpleDateFormat(Appointment.DATE_FORMAT, Locale.US).format(d);
+                Toast.makeText(getContext(),"DF = "+df,Toast.LENGTH_LONG).show();
                 Appointment appointment = new Appointment(appointmentId, lawyerId, clientId, df, msg);
                 FirebaseHelper.sendAppointmentRequest(appointment, new FirebaseHelper.FirebaseActions() {
                     @Override

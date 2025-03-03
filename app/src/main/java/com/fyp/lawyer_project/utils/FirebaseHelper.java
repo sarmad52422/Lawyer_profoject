@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Build;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -212,11 +213,13 @@ public class FirebaseHelper {
     private static void checkIfLawyerAvailable(Appointment appointment, FirebaseActions actions) {
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference(LAWYER_TABLE).child(appointment.getLawyerID());
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 Lawyer lawyer = snapshot.getValue(Lawyer.class);
+                assert lawyer != null;
                 String[] workingDays = lawyer.getSchedule().getWorkingDays().split("-");
+                Log.e("SECHULDE TABLE",getDayFromDate(appointment.getAppointmentDate()));
+                Log.e("SCHULE = ",timeInRange(lawyer.getSchedule().getFromTime(),lawyer.getSchedule().getToTime(),appointment.getAppointmentDate())+"");
 
                 if (Arrays.asList(workingDays).contains(getDayFromDate(appointment.getAppointmentDate())) && timeInRange(lawyer.getSchedule().getFromTime(), lawyer.getSchedule().getToTime(), appointment.getAppointmentDate())) {
                     checkIfLawyerAlreadyBookedWithOtherClient(appointment, lawyer, actions);
@@ -293,7 +296,9 @@ public class FirebaseHelper {
             Date selectedTime = covertDateToTime(selectedTimeD);
             Date toTime = AmPmTo24(lawyerToTime);
             Date fromTime = AmPmTo24(lawyerFromTime);
-//            Log.e("result = ",""+(selectedTime.after(fromTime)));
+            Log.e("result = ",""+(selectedTime.after(fromTime)));
+            Log.e("Result 2 = ",""+(selectedTime.before(fromTime)));
+            Log.e("time ranges",selectedTime.toString()+" =====  "+toTime);
             if (selectedTime.after(fromTime) && selectedTime.before(toTime)) {
                 return true;
             }
