@@ -4,14 +4,12 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,18 +34,13 @@ import com.fyp.lawyer_project.utils.Utilities;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 
+import org.jitsi.meet.sdk.JitsiMeetActivity;
+import org.jitsi.meet.sdk.JitsiMeetConferenceOptions;
+
+import java.net.URL;
 import java.util.ArrayList;
 
-import us.zoom.sdk.MeetingService;
-import us.zoom.sdk.MeetingServiceListener;
-import us.zoom.sdk.MeetingStatus;
-import us.zoom.sdk.StartMeetingOptions;
-import us.zoom.sdk.ZoomApiError;
-import us.zoom.sdk.ZoomAuthenticationError;
-import us.zoom.sdk.ZoomSDK;
-import us.zoom.sdk.ZoomSDKAuthenticationListener;
-
-public class LawyerHome extends RootFragment implements NavigationView.OnNavigationItemSelectedListener, AppointmentRequestAdapter.AppointmentListCallBack,MeetingServiceListener {
+public class LawyerHome extends RootFragment implements NavigationView.OnNavigationItemSelectedListener, AppointmentRequestAdapter.AppointmentListCallBack {
     private View rootView;
     private MainFragmentActivity callBackHandler;
     private Lawyer currentUser;
@@ -69,14 +62,15 @@ public class LawyerHome extends RootFragment implements NavigationView.OnNavigat
 
     private void initClickActions() {
         rootView.findViewById(R.id.drawer_btn).setOnClickListener(view -> openDrawer());
-        rootView.findViewById(R.id.refreshIcon).setOnClickListener(view->refreshFragment());
+        rootView.findViewById(R.id.refreshIcon).setOnClickListener(view -> refreshFragment());
     }
-    private void refreshFragment(){
+
+    private void refreshFragment() {
         loadAppointmentRequest();
     }
+
     private void openDrawer() {
         ((DrawerLayout) rootView.findViewById(R.id.drawer_layout_lawyer)).openDrawer(GravityCompat.START);
-
     }
 
     private void initHomeScreen() {
@@ -88,8 +82,6 @@ public class LawyerHome extends RootFragment implements NavigationView.OnNavigat
         ((TextView) rootView.findViewById(R.id.lawyer_profile_name)).setText(currentUser.getFullName());
         ((TextView) rootView.findViewById(R.id.user_last_name)).setText(currentUser.getLastName());
         ((TextView) header.findViewById(R.id.drawer_user_namme)).setText(currentUser.getFullName());
-
-
     }
 
     private void loadAppointmentRequest() {
@@ -105,7 +97,6 @@ public class LawyerHome extends RootFragment implements NavigationView.OnNavigat
             @Override
             public void onAppointmentRecordLoaded(ArrayList<Appointment> appointments) {
                 for (Appointment appointment : appointments) {
-
                     if (appointment.getAppointmentStatus().equals(Appointment.STATUS_NOT_ACCEPTED)) {
                         notAcceptedAppointments.add(appointment);
                     } else if (appointment.getAppointmentStatus().equals(Appointment.STATUS_ACCEPTED)) {
@@ -121,60 +112,54 @@ public class LawyerHome extends RootFragment implements NavigationView.OnNavigat
 
                 rootView.findViewById(R.id.requestLoadingProgress).setVisibility(View.GONE);
                 rootView.findViewById(R.id.appointmentLoadingProgress).setVisibility(View.GONE);
-
-
             }
         });
-
     }
-    public void onAppointmentItemClicked(Appointment appointment){
+
+    public void onAppointmentItemClicked(Appointment appointment) {
         AlertDialog.Builder dialog = new AlertDialog.Builder(rootView.getContext());
         dialog.setTitle("Meeting");
         dialog.setMessage("Start Meeting?");
-        dialog.setPositiveButton("Yes", (dialogInterface, i) ->startMeeting(appointment.getClientID()));
+        dialog.setPositiveButton("Yes", (dialogInterface, i) -> startMeeting(appointment.getClientID()));
         dialog.setNegativeButton("No", (dialogInterface, i) -> dialogInterface.dismiss());
         dialog.show();
-
-    }
-    private void loginZoom(String email,String password) {
-        int result = ZoomSDK.getInstance().loginWithZoom("sarmad.52422@gmail.com", "SHIppud3N");
-        if (result == ZoomApiError.ZOOM_API_ERROR_SUCCESS) {
-            ZoomSDK.getInstance().addAuthenticationListener(authenticationListener);
-        }
     }
 
-    private final ZoomSDKAuthenticationListener authenticationListener = new ZoomSDKAuthenticationListener() {
-        @Override
-        public void onZoomSDKLoginResult(long l) {
-            if (l == ZoomAuthenticationError.ZOOM_AUTH_ERROR_SUCCESS) {
-                Toast.makeText(rootView.getContext(), "Zoom Login Successful", Toast.LENGTH_LONG).show();
+    private void startMeeting(String clientId) {
+        this.clientId = clientId;
 
-            }
+        try {
+            // Generate a unique room name using clientId and a timestamp
+            String roomName = "LawyerClientMeeting_" + clientId + "_" + System.currentTimeMillis();
+
+            // Configure Jitsi options
+            JitsiMeetConferenceOptions options = new JitsiMeetConferenceOptions.Builder()
+                    .setServerURL(new URL("https://meet.jit.si")) // Public server
+                    .setRoom(roomName) // Unique room for this meeting
+                    .setAudioMuted(false)
+                    .setVideoMuted(false)
+                    .build();
+
+            // Launch the meeting
+            JitsiMeetActivity.launch(getContext(), options);
+
+            // Send meeting notification to client via Firebase
+            FirebaseHelper.sendMeetingNotification(rootView.getContext(), roomName, roomName, clientId);
+        } catch (Exception e) {
+            Log.e("Jitsi Error", e.getMessage());
+            Toast.makeText(getContext(), "Failed to start meeting: " + e.getMessage(), Toast.LENGTH_LONG).show();
         }
-
-        @Override
-        public void onZoomSDKLogoutResult(long l) {
-
-        }
-
-        @Override
-        public void onZoomIdentityExpired() {
-
-        }
-
-        @Override
-        public void onZoomAuthIdentityExpired() {
-
-        }
-    };
+    }
 
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-        inflater.inflate(R.menu.user_menu,menu);
+        inflater.inflate(R.menu.user_menu, menu);
         super.onCreateOptionsMenu(menu, inflater);
+        // Remove Zoom login/logout item since Jitsi doesn't need authentication
         MenuItem item = menu.findItem(R.id.loginZoom);
-        if(ZoomSDK.getInstance().isLoggedIn())
-            item.setTitle("Logout Zoom");
+        if (item != null) {
+            item.setVisible(false); // Hide Zoom-specific menu item
+        }
     }
 
     @Override
@@ -184,7 +169,6 @@ public class LawyerHome extends RootFragment implements NavigationView.OnNavigat
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-
         if (item.getItemId() == R.id.my_profile_btn) {
             getFragmentManager().beginTransaction().addToBackStack(LawyerProfile.class.getName()).replace(R.id.container, new LawyerProfile()).commit();
         } else if (item.getItemId() == R.id.mng_schedules) {
@@ -192,81 +176,33 @@ public class LawyerHome extends RootFragment implements NavigationView.OnNavigat
         } else if (item.getItemId() == R.id.signout) {
             FirebaseAuth.getInstance().signOut();
             callBackHandler.signOut();
-        }
-        else if(item.getItemId() == R.id.case_req_btn){
-            CaseRequestsDialog dialog = new CaseRequestsDialog(getContext(),currentUser.getUserId());
+        } else if (item.getItemId() == R.id.case_req_btn) {
+            CaseRequestsDialog dialog = new CaseRequestsDialog(getContext(), currentUser.getUserId());
             dialog.show();
-
+        } else if (item.getItemId() == R.id.my_clients_btn) {
+            callBackHandler.openFragment(new MyClientsFragment(), MyClientsFragment.class.getName());
         }
-        else if(item.getItemId() == R.id.my_clients_btn){
-            callBackHandler.openFragment(new MyClientsFragment(),MyClientsFragment.class.getName());
-        }
-        else if (item.getItemId() == R.id.loginZoom) {
-            if(ZoomSDK.getInstance().isLoggedIn())
-            {
-                ZoomSDK.getInstance().logoutZoom();
-            }
-            else {
-                showLoginWindow();
-                item.setTitle("Logout Zoom");
-            }
-        }
+        // Removed Zoom login/logout logic as Jitsi doesn't require it
         return true;
-    }
-    private void showLoginWindow(){
-        CustomDialogs.ZoomLoginDialog dialog = new CustomDialogs.ZoomLoginDialog(rootView.getContext(), new CustomDialogs.ZoomLoginDialog.LoginWindowCallBack() {
-            @Override
-            public void onLoginButtonClicked(String userName, String password) {
-                if(!ZoomSDK.getInstance().isLoggedIn())
-                    loginZoom(userName,password);
-
-            }
-        });
-        dialog.show();
-    }
-    private void startMeeting(String clientId){
-        this.clientId = clientId;
-
-        if(ZoomSDK.getInstance().isLoggedIn()) {
-            MeetingService meetingService = ZoomSDK.getInstance().getMeetingService();
-            StartMeetingOptions options = new StartMeetingOptions();
-            meetingService.startInstantMeeting(rootView.getContext(),options);
-            meetingService.addListener(this);
-        }
-        else{
-            Toast.makeText(rootView.getContext(),"Please Login Zoom ID first",Toast.LENGTH_LONG).show();
-        }
-
     }
 
     @Override
     public void onAppointmentAccepted(Appointment appointment) {
         RecyclerView appoinmentRequestList = rootView.findViewById(R.id.appointment_request_list);
         RecyclerView upComingAppointments = rootView.findViewById(R.id.upcomingAppointmentList);
-       AppointmentRequestAdapter adapter = (AppointmentRequestAdapter) appoinmentRequestList.getAdapter();
-       UpcomingAppointmentAdapter upAdapter = (UpcomingAppointmentAdapter) upComingAppointments.getAdapter();
-       adapter.removeItem(appointment);
-       upAdapter.addItem(appointment);
-
+        AppointmentRequestAdapter adapter = (AppointmentRequestAdapter) appoinmentRequestList.getAdapter();
+        UpcomingAppointmentAdapter upAdapter = (UpcomingAppointmentAdapter) upComingAppointments.getAdapter();
+        adapter.removeItem(appointment);
+        upAdapter.addItem(appointment);
     }
 
     @Override
     public void onAppointmentRejected(Appointment appointment) {
-
+        // No changes needed here
     }
 
     @Override
     public void onUserImageClicked(String clientID) {
-
-    }
-
-    @Override
-    public void onMeetingStatusChanged(MeetingStatus meetingStatus, int i, int i1) {
-        if(MeetingStatus.MEETING_STATUS_INMEETING == meetingStatus){
-            Log.e("Meeting with ",clientId);
-            long meetingId = ZoomSDK.getInstance().getInMeetingService().getCurrentMeetingNumber();
-            String meetingPassword = ZoomSDK.getInstance().getInMeetingService().getMeetingPassword();
-            FirebaseHelper.sendMeetingNotification(rootView.getContext(),meetingId,meetingPassword,clientId);
-        }
+        // No changes needed here
     }
 }

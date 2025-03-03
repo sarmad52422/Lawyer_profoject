@@ -112,7 +112,7 @@ public class FirebaseHelper {
 
     }
 
-    public static void sendMeetingNotification(Context iContext, long meetingId, String meetingPassword, String clientId) {
+    public static void sendMeetingNotification(Context iContext, String meetingId, String meetingPassword, String clientId) {
         String meetingTitle = "Meeting Join Request";
         String meetingMsg = "Meeting ID: " + meetingId + "\n" + "Meeting Password: " + meetingPassword;
         FirebaseDatabase.getInstance().getReference(CLIENT_TABLE).child(clientId).addListenerForSingleValueEvent(new ValueEventListener() {

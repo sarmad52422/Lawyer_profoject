@@ -22,19 +22,15 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.messaging.FirebaseMessaging;
 
-import us.zoom.sdk.MeetingServiceListener;
-import us.zoom.sdk.MeetingStatus;
-import us.zoom.sdk.ZoomAuthenticationError;
-import us.zoom.sdk.ZoomSDK;
-import us.zoom.sdk.ZoomSDKAuthenticationListener;
-import us.zoom.sdk.ZoomSDKInitParams;
-import us.zoom.sdk.ZoomSDKInitializeListener;
+import org.jitsi.meet.sdk.JitsiMeetActivity;
+import org.jitsi.meet.sdk.JitsiMeetConferenceOptions;
+
+import java.net.URL;
 
 public class MainActivity extends MainFragmentActivity {
     private String meetingID = "NOT SET";
-    private String meetingPassword = "NOT SET";
+    private String meetingPassword = "NOT SET"; // Unused with Jitsi public server
     public static boolean active = false;
-    private boolean meetingDisconnecting = false;
     public static MainActivity mainActivity;
 
     @Override
@@ -46,10 +42,7 @@ public class MainActivity extends MainFragmentActivity {
         setContentView(R.layout.activity_main);
         initMainFragment();
         findViewById(R.id.backBtn).setOnClickListener(view -> goBack());
-        initalizeZoom();
         mainActivity = this;
-
-
     }
 
     @Override
@@ -74,7 +67,6 @@ public class MainActivity extends MainFragmentActivity {
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         setIntent(intent);
-
     }
 
     private String[] getIdPasswordFromNotificationMessage(String msgValue) {
@@ -91,96 +83,57 @@ public class MainActivity extends MainFragmentActivity {
         if (getIntent() != null && getIntent().getExtras() != null) {
             Log.e(MainActivity.class.getName(), " Created!!!!!");
             try {
-
                 String[] idPassword = getIdPasswordFromNotificationMessage(getIntent().getExtras().getString("text"));
                 meetingID = idPassword[0];
-                meetingPassword = idPassword[1];
-                Log.e("Meeting ID", idPassword[0] + "");
-                Log.e("Meeting Password", idPassword[1] + "");
+                meetingPassword = idPassword[1]; // Kept for compatibility, unused by Jitsi
+                Log.e("Meeting ID", meetingID);
+                Log.e("Meeting Password", meetingPassword);
                 askForMeetingIfFragmentIsOpen();
                 setIntent(null);
             } catch (Exception ignore) {
                 Log.e("ERROR = ", ignore.getMessage());
             }
         }
-
-
     }
 
     public void showMeetingNotification(String notificationMessage, String title) {
         RootFragment fragment = (RootFragment) getSupportFragmentManager().findFragmentByTag("CLIENT");
         if (fragment != null && fragment.isVisible()) {
             if (title.equals(ClientCase.CASE_PROGRESS)) {
-                ((ClientHome)fragment).showNotification(notificationMessage,title);
-
+                ((ClientHome) fragment).showNotification(notificationMessage, title);
             } else {
                 ((ClientHome) fragment).showNotification(notificationMessage, "meeting");
             }
         }
-
     }
 
     private void askForMeetingIfFragmentIsOpen() {
         RootFragment fragment = (RootFragment) getSupportFragmentManager().findFragmentByTag("CLIENT");
-
-        if (fragment != null && fragment.isVisible() && !meetingDisconnecting) {
-
-            ((ClientHome) fragment).showMeetingConfirmationDialog(meetingID, meetingPassword);
+        if (fragment != null && fragment.isVisible()) {
+            // Launch Jitsi meeting directly or via ClientHome dialog
+            launchJitsiMeeting(meetingID);
         }
-
     }
 
-    private final MeetingServiceListener meetingServiceListener = new MeetingServiceListener() {
-        @Override
-        public void onMeetingStatusChanged(MeetingStatus meetingStatus, int i, int i1) {
-            if (meetingStatus == MeetingStatus.MEETING_STATUS_DISCONNECTING) {
-                meetingDisconnecting = true;
-            }
+    private void launchJitsiMeeting(String meetingId) {
+        try {
+            // Use meetingID from notification, or fallback to a default
+            String roomName = "LawyerClientMeeting_" + (meetingId.equals("NOT SET") ? java.util.UUID.randomUUID().toString() : meetingId);
+
+            // Configure Jitsi options
+            JitsiMeetConferenceOptions options = new JitsiMeetConferenceOptions.Builder()
+                    .setServerURL(new URL("https://meet.jit.si")) // Public server
+                    .setRoom(roomName) // Unique room name
+                    .setAudioMuted(false)
+                    .setVideoMuted(false)
+                    .build();
+
+            // Launch the meeting
+            JitsiMeetActivity.launch(this, options);
+        } catch (Exception e) {
+            Log.e("Jitsi Error", e.getMessage());
+            Toast.makeText(this, "Failed to start meeting: " + e.getMessage(), Toast.LENGTH_LONG).show();
         }
-    };
-    private final ZoomSDKAuthenticationListener authenticationListener = new ZoomSDKAuthenticationListener() {
-        @Override
-        public void onZoomSDKLoginResult(long l) {
-            if (l == ZoomAuthenticationError.ZOOM_AUTH_ERROR_SUCCESS) {
-
-            }
-        }
-
-        @Override
-        public void onZoomSDKLogoutResult(long l) {
-
-        }
-
-        @Override
-        public void onZoomIdentityExpired() {
-
-        }
-
-        @Override
-        public void onZoomAuthIdentityExpired() {
-
-        }
-    };
-
-    private void initalizeZoom() {
-        ZoomSDK sdk = ZoomSDK.getInstance();
-        ZoomSDKInitParams params = new ZoomSDKInitParams();
-        params.appKey = "TexfGqKTu4PPCptnHorbTzTf03GUeb5blaaT";
-        params.appSecret = "wTlN8BPhjExgZdIS3uJQxcQRZkLL0UhEgXeW";
-        params.domain = "zoom.us";
-        params.enableLog = true;
-        ZoomSDKInitializeListener listener = new ZoomSDKInitializeListener() {
-            @Override
-            public void onZoomSDKInitializeResult(int i, int i1) {
-
-            }
-
-            @Override
-            public void onZoomAuthIdentityExpired() {
-
-            }
-        };
-        sdk.initialize(this, listener, params);
     }
 
     private void initMainFragment() {
@@ -219,7 +172,6 @@ public class MainActivity extends MainFragmentActivity {
         fragment.setCallBackAction(this);
         getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment).commit();
         findViewById(R.id.simple_title_bar_layout).setVisibility(View.VISIBLE);
-
     }
 
     private void goBack() {
@@ -236,7 +188,6 @@ public class MainActivity extends MainFragmentActivity {
     public void onUserLoggedIn(User user) {
         User.setCurrentLoggedInUser(user);
         if (user instanceof Lawyer) {
-
             openFragment(new LawyerHome(), "LAWYER");
         } else if (user instanceof Client) {
             openClientFragment();
@@ -248,20 +199,23 @@ public class MainActivity extends MainFragmentActivity {
     public void onBackPressed() {
         if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
             goBack();
-        } else
+        } else {
             super.onBackPressed();
+        }
     }
 
     private void openClientFragment() {
-        if (meetingID.equals("NOT SET") && meetingPassword.equals("NOT SET"))
+        if (meetingID.equals("NOT SET")) {
             openFragment(new ClientHome(), "CLIENT");
-        else {
+        } else {
             ClientHome clientHome = new ClientHome();
             Bundle bundle = new Bundle();
             bundle.putString("ID", meetingID);
-            bundle.putString("PASSWORD", meetingPassword);
+            bundle.putString("PASSWORD", meetingPassword); // Kept for compatibility, unused by Jitsi
             clientHome.setArguments(bundle);
             openFragment(clientHome, "CLIENT");
+            // Optionally launch meeting immediately
+            launchJitsiMeeting(meetingID);
         }
     }
 }
