@@ -9,7 +9,6 @@ import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -26,6 +25,7 @@ public class AppointmentRequestAdapter extends RecyclerView.Adapter<AppointmentR
     private Context iContext;
     private Dialog confirmationDialog;
     private AppointmentListCallBack callBack;
+
     public AppointmentRequestAdapter(ArrayList<Appointment> appointments, Context iContext) {
         this.appointmentArrayList = appointments;
         this.iContext = iContext;
@@ -33,7 +33,6 @@ public class AppointmentRequestAdapter extends RecyclerView.Adapter<AppointmentR
         confirmationDialog.setContentView(R.layout.confirmation_dialog);
         int screenWidth = getScreenWidth();
         confirmationDialog.getWindow().setLayout(screenWidth - 40, ViewGroup.LayoutParams.WRAP_CONTENT);
-
         confirmationDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
     }
 
@@ -59,20 +58,33 @@ public class AppointmentRequestAdapter extends RecyclerView.Adapter<AppointmentR
         holder.clientFirstNameView.setText(appointment.getClientID());
         holder.dateAndTime.setText(appointment.getAppointmentDate());
     }
-    public void removeItem(Appointment appointment){
-        appointmentArrayList.remove(appointment);
+
+    public void removeItem(Appointment appointment) {
+        int position = appointmentArrayList.indexOf(appointment);
+        if (position != -1) {
+            appointmentArrayList.remove(position);
+            notifyItemRemoved(position);
+            notifyItemRangeChanged(position, appointmentArrayList.size()); // Ensure layout adjusts
+        }
+    }
+
+    public void updateAppointments(ArrayList<Appointment> newAppointments) {
+        appointmentArrayList.clear();
+        appointmentArrayList.addAll(newAppointments);
         notifyDataSetChanged();
     }
-    public void setOnItemCallBack(AppointmentListCallBack callBack){
+
+    public void setOnItemCallBack(AppointmentListCallBack callBack) {
         this.callBack = callBack;
     }
+
     @Override
     public int getItemCount() {
         return appointmentArrayList.size();
     }
 
     class ClickHandler implements View.OnClickListener {
-        private int position = 0;
+        private int position;
 
         public ClickHandler(int pos) {
             this.position = pos;
@@ -83,37 +95,32 @@ public class AppointmentRequestAdapter extends RecyclerView.Adapter<AppointmentR
         public void onClick(View view) {
             if (view.getId() == R.id.viewAppointmentMessageButton) {
                 openAppointmentMessage(appointmentArrayList.get(position));
-
             } else if (view.getId() == R.id.cancel_appointment_button) {
-                ((TextView)confirmationDialog.findViewById(R.id.confirmationMessageView)).setText(
-                        "Are You Sure You Want To Reject Appointment? "
-
+                ((TextView) confirmationDialog.findViewById(R.id.confirmationMessageView)).setText(
+                        "Are You Sure You Want To Reject Appointment?"
                 );
                 confirmationDialog.findViewById(R.id.positiveButton).setOnClickListener(v1 -> {
-                    FirebaseHelper.updateAppointmentStatus(appointmentArrayList.get(position).getAppointmentId(), Appointment.STATUS_REJECTED);
+                    Appointment appointment = appointmentArrayList.get(position);
+                    FirebaseHelper.updateAppointmentStatus(appointment.getAppointmentId(), Appointment.STATUS_REJECTED);
                     confirmationDialog.dismiss();
-                    callBack.onAppointmentRejected(appointmentArrayList.get(position));
-
+                    callBack.onAppointmentRejected(appointment);
                 });
                 confirmationDialog.findViewById(R.id.negtiveButton).setOnClickListener(v2 -> confirmationDialog.dismiss());
                 confirmationDialog.show();
-
             } else if (view.getId() == R.id.accept_appointment_button) {
-                ((TextView)confirmationDialog.findViewById(R.id.confirmationMessageView)).setText(
-                        "Are You Sure You Want To Accept Appointment? "
+                ((TextView) confirmationDialog.findViewById(R.id.confirmationMessageView)).setText(
+                        "Are You Sure You Want To Accept Appointment?"
                 );
                 confirmationDialog.findViewById(R.id.positiveButton).setOnClickListener(v1 -> {
-                    FirebaseHelper.updateAppointmentStatus(appointmentArrayList.get(position).getAppointmentId(), Appointment.STATUS_ACCEPTED);
+                    Appointment appointment = appointmentArrayList.get(position);
+                    FirebaseHelper.updateAppointmentStatus(appointment.getAppointmentId(), Appointment.STATUS_ACCEPTED);
                     confirmationDialog.dismiss();
-                    callBack.onAppointmentAccepted(appointmentArrayList.get(position));
+                    callBack.onAppointmentAccepted(appointment);
                 });
                 confirmationDialog.findViewById(R.id.negtiveButton).setOnClickListener(v2 -> confirmationDialog.dismiss());
                 confirmationDialog.show();
-
-
             }
         }
-
     }
 
     private void openAppointmentMessage(Appointment appointment) {
@@ -139,10 +146,10 @@ public class AppointmentRequestAdapter extends RecyclerView.Adapter<AppointmentR
             acceptButton = itemView.findViewById(R.id.accept_appointment_button);
             declineButton = itemView.findViewById(R.id.cancel_appointment_button);
             viewMessageButton = itemView.findViewById(R.id.viewAppointmentMessageButton);
-
         }
     }
-    public interface AppointmentListCallBack{
+
+    public interface AppointmentListCallBack {
         void onAppointmentAccepted(Appointment appointment);
         void onAppointmentRejected(Appointment appointment);
         void onUserImageClicked(String clientID);

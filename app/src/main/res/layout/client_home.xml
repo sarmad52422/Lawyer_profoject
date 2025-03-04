@@ -2,25 +2,25 @@
 <androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:backgroundTint="#000FFF"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    android:id="@+id/drawer_layout"
     tools:openDrawer="start">
-
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fitsSystemWindows="true"
-        android:background="@color/material_dynamic_neutral95"
-        >
+        android:background="@drawable/home_background_gradient">
+
 
         <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/topBarLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/topBarLayout"
+            android:background="#FFFFFF"
+            android:elevation="4dp"
             app:layout_constraintTop_toTopOf="parent">
 
             <include
@@ -28,66 +28,63 @@
                 layout="@layout/user_topbar_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
-
         </com.google.android.material.appbar.AppBarLayout>
 
+        <!-- Main Content -->
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="0dip"
-            app:layout_constraintTop_toBottomOf="@+id/topBarLayout"
-            android:padding="15dip"
-
-            android:layout_marginTop="10dip"
-            >
+            android:layout_height="0dp"
+            android:padding="16dp"
+            app:layout_constraintTop_toBottomOf="@id/topBarLayout"
+            app:layout_constraintBottom_toBottomOf="parent">
 
             <TextView
                 android:id="@+id/welcomeNote"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dip"
                 android:text="Welcome Back"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-
-                />
+                android:textSize="16sp"
+                android:textColor="#757575"
+            android:paddingBottom="4dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/lawyer_profile_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dip"
                 android:text="Profile Name"
-                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textSize="24sp"
                 android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/welcomeNote" />
+                android:textColor="#212121"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/welcomeNote" />
 
             <include
                 android:id="@+id/appointment_card"
                 layout="@layout/appointment_card"
                 android:layout_width="match_parent"
-                android:visibility="gone"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="30dip"
-                app:layout_constraintTop_toBottomOf="@+id/lawyer_profile_name" />
+                android:layout_marginTop="16dp"
+                android:visibility="gone"
+                app:layout_constraintTop_toBottomOf="@id/lawyer_profile_name" />
 
             <androidx.recyclerview.widget.RecyclerView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dip"
                 android:id="@+id/lawyersList"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/appointment_card" />
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="16dp"
+                app:layout_constraintTop_toBottomOf="@id/appointment_card"
+                app:layout_constraintBottom_toBottomOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.google.android.material.navigation.NavigationView
+        android:id="@+id/navView"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:id="@+id/navView"
         app:headerLayout="@layout/drawer_user_header"
         android:visibility="visible"
         app:menu="@menu/client_menu" />
-
 </androidx.drawerlayout.widget.DrawerLayout>

@@ -32,18 +32,31 @@ public class UpcomingAppointmentAdapter extends RecyclerView.Adapter<UpcomingApp
         View v = LayoutInflater.from(iContext).inflate(R.layout.up_coming_appointment_item, parent, false);
         return new AppointmentHolder(v);
     }
-    public void setOnItemClickListener(OnItemClickListener onItemClickListener){
+
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
         this.onItemClickListener = onItemClickListener;
     }
+
     @Override
     public void onBindViewHolder(@NonNull AppointmentHolder holder, int position) {
         Appointment appointment = appointments.get(position);
         holder.clientIDView.setText(appointment.getClientID());
         holder.dateView.setText(appointment.getAppointmentDate());
-        holder.itemView.setOnClickListener(view->onItemClickListener.onItemClicked(appointment));
+        holder.itemView.setOnClickListener(view -> {
+            if (onItemClickListener != null) {
+                onItemClickListener.onItemClicked(appointment);
+            }
+        });
     }
-    public void addItem(Appointment appointment){
+
+    public void addItem(Appointment appointment) {
         appointments.add(appointment);
+        notifyItemInserted(appointments.size() - 1);
+    }
+
+    public void updateAppointments(ArrayList<Appointment> newAppointments) {
+        appointments.clear();
+        appointments.addAll(newAppointments);
         notifyDataSetChanged();
     }
 
@@ -62,9 +75,9 @@ public class UpcomingAppointmentAdapter extends RecyclerView.Adapter<UpcomingApp
             clientIDView = itemView.findViewById(R.id.clientIdView);
             dateView = itemView.findViewById(R.id.appointmentDateView);
             profileImage = itemView.findViewById(R.id.profileImage);
-
         }
     }
+
     interface OnItemClickListener {
         void onItemClicked(Appointment appointment);
     }

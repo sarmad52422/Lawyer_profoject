@@ -46,6 +46,8 @@ public class MyCases extends RootFragment {
         initClientList();
 
         return rootView;
+
+
     }
 
     @SuppressLint("SetTextI18n")

@@ -1,182 +1,146 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:gravity="center"
-    android:orientation="vertical">
-    <androidx.appcompat.widget.LinearLayoutCompat
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dip"
-        android:orientation="horizontal">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/black"
+    android:background="@drawable/dialog_background"
+    android:backgroundTint="#F5F5F5"
+    android:orientation="vertical"
+    android:padding="16dp">
 
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Case Title: "/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Case title goes here"
-            android:id="@+id/caseTitle"
-            android:textColor="@color/black"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:layout_marginStart="10dip"/>
-    </androidx.appcompat.widget.LinearLayoutCompat>
+    <!-- Case Title -->
+    <TextView
+        android:id="@+id/caseTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="8dp"
+        android:textColor="#212121"
+        android:textSize="20sp"
+        android:textStyle="bold" />
 
-    <androidx.appcompat.widget.LinearLayoutCompat
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dip"
-        android:orientation="horizontal">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/black"
-            android:layout_gravity="start"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Case Progress: "/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Currently on 2nd appearing"
-            android:textColor="@color/black"
-            android:id="@+id/caseProgress"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:layout_marginStart="10dip"/>
-    </androidx.appcompat.widget.LinearLayoutCompat>
-    <androidx.appcompat.widget.LinearLayoutCompat
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dip"
-        android:orientation="horizontal">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/black"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Case Budget: "/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="10000000"
-            android:id="@+id/caseBudget"
-            android:textColor="@color/black"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:layout_marginStart="10dip"/>
-    </androidx.appcompat.widget.LinearLayoutCompat>
-    <androidx.appcompat.widget.LinearLayoutCompat
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dip"
-        android:orientation="horizontal">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/black"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Case Status: "/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Active"
-            android:textColor="@color/black"
-            android:id="@+id/caseStatus"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:layout_marginStart="10dip"/>
-    </androidx.appcompat.widget.LinearLayoutCompat>
-    <androidx.appcompat.widget.LinearLayoutCompat
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dip"
-        android:orientation="horizontal">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/black"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Client Feedback: "/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Please update me on this"
-            android:textColor="@color/black"
-            android:ems="11"
-            android:id="@+id/caseFeedback"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:layout_marginStart="10dip"/>
-    </androidx.appcompat.widget.LinearLayoutCompat>
-    <androidx.appcompat.widget.LinearLayoutCompat
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dip"
-        android:orientation="horizontal">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/black"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Lawyer Comment: "/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="working on bail"
-            android:textColor="@color/black"
-            android:id="@+id/lawyerComment"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:layout_marginStart="10dip"/>
-    </androidx.appcompat.widget.LinearLayoutCompat>
-    <androidx.appcompat.widget.LinearLayoutCompat
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dip"
-        android:orientation="horizontal">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/black"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Client ID: "/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="_sarmad"
-            android:id="@+id/clientID"
-            android:textColor="@color/black"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:layout_marginStart="10dip"/>
-    </androidx.appcompat.widget.LinearLayoutCompat>
-    <androidx.appcompat.widget.LinearLayoutCompat
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dip"
-        android:orientation="horizontal">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/black"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Case Details "/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Case title goes hereasdfasdf"
-            android:textColor="@color/black"
-            android:ems="10"
-            android:id="@+id/caseDetails"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:layout_marginStart="10dip"/>
-    </androidx.appcompat.widget.LinearLayoutCompat>
+    <!-- View Progress Button -->
     <Button
+        android:id="@+id/caseProgress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp"
+        android:backgroundTint="#1976D2"
+        android:elevation="2dp"
+        android:padding="8dp"
+        android:text="View Progress"
+        android:textColor="#FFFFFF"
+        android:textSize="14sp" />
+
+    <!-- Case Budget -->
+    <TextView
         android:layout_width="match_parent"
-        android:layout_marginTop="20dip"
-        android:textAllCaps="false"
-        android:text="Update Case Progress"
+        android:layout_height="wrap_content"
+        android:paddingBottom="2dp"
+        android:text="Budget:"
+        android:textColor="#757575"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/caseBudget"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="12dp"
+        android:textColor="#000000"
+        android:textSize="16sp" />
+
+    <!-- Case Status -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="2dp"
+        android:text="Status:"
+        android:textColor="#757575"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/caseStatus"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="12dp"
+        android:textColor="#000000"
+        android:textSize="16sp" />
+
+    <!-- Case Feedback -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="2dp"
+        android:text="Feedback:"
+        android:textColor="#757575"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/caseFeedback"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="12dp"
+        android:textColor="#000000"
+        android:textSize="16sp" />
+
+    <!-- Lawyer Comment -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="2dp"
+        android:text="Lawyer Comment:"
+        android:textColor="#757575"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/lawyerComment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="12dp"
+        android:textColor="#000000"
+        android:textSize="16sp" />
+
+    <!-- Client ID -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="2dp"
+        android:text="Client ID:"
+        android:textColor="#757575"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/clientID"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="12dp"
+        android:textColor="#000000"
+        android:textSize="16sp" />
+
+    <!-- Case Details -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="2dp"
+        android:text="Details:"
+        android:textColor="#757575"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/caseDetails"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="12dp"
+        android:textColor="#000000"
+        android:textSize="16sp" />
+
+    <Button
         android:id="@+id/updateCaseProgressButton"
-        android:layout_height="wrap_content"/>
-
-
-
-</androidx.appcompat.widget.LinearLayoutCompat>
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#388E3C"
+        android:elevation="2dp"
+        android:padding="8dp"
+        android:text="Update Progress"
+        android:textColor="#FFFFFF"
+        android:textSize="14sp"
+        android:visibility="visible" />
+</LinearLayout>

@@ -76,6 +76,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dip"
                 android:text="Welcome Back"
+                android:textColor="@color/black"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
 
@@ -87,6 +88,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dip"
                 android:text="Profile Name"
+                android:textColor="@color/black"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
