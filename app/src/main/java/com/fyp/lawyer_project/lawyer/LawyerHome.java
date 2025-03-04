@@ -60,6 +60,12 @@ public class LawyerHome extends RootFragment implements NavigationView.OnNavigat
         return rootView;
     }
 
+    @Override
+    public void onResume() {
+        initHomeScreen();
+        super.onResume();
+    }
+
     private void initClickActions() {
         rootView.findViewById(R.id.drawer_btn).setOnClickListener(view -> openDrawer());
         rootView.findViewById(R.id.refreshIcon).setOnClickListener(view -> refreshFragment());
@@ -156,10 +162,7 @@ public class LawyerHome extends RootFragment implements NavigationView.OnNavigat
         inflater.inflate(R.menu.user_menu, menu);
         super.onCreateOptionsMenu(menu, inflater);
         // Remove Zoom login/logout item since Jitsi doesn't need authentication
-        MenuItem item = menu.findItem(R.id.loginZoom);
-        if (item != null) {
-            item.setVisible(false); // Hide Zoom-specific menu item
-        }
+
     }
 
     @Override

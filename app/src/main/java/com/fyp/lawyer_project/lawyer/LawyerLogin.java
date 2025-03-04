@@ -16,6 +16,9 @@ import com.fyp.lawyer_project.main.MainFragmentActivity;
 import com.fyp.lawyer_project.main.RootFragment;
 import com.fyp.lawyer_project.modal_classes.User;
 import com.fyp.lawyer_project.utils.FirebaseHelper;
+import com.google.firebase.auth.FirebaseAuth;
+
+import java.util.ArrayList;
 
 public class LawyerLogin extends RootFragment {
     private View rootView;
@@ -40,6 +43,16 @@ public class LawyerLogin extends RootFragment {
                 Toast.makeText(rootView.getContext(), status,Toast.LENGTH_LONG).show();
                 if(status.equals("Successful")) {
                     callBackHandler.onUserLoggedIn(user);
+                }
+                else if(status.equals("Already Logged In")){
+                    FirebaseAuth auth = FirebaseAuth.getInstance();
+                    FirebaseHelper.getUserInformation(auth.getCurrentUser().getEmail(), User.TYPE_LAWYER, dialog, new FirebaseHelper.FirebaseActions() {
+                        @Override
+                        public void onUserFound(User user) {
+                            callBackHandler.onUserLoggedIn(user);
+                        }
+                    });
+
                 }
             }
         });

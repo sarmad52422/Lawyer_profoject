@@ -41,10 +41,10 @@
 
             >
             <androidx.constraintlayout.utils.widget.ImageFilterView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@android:drawable/ic_media_rew"
-                android:tint="#00FF00"
+                android:layout_width="40dip"
+                android:layout_height="40dip"
+                android:src="@drawable/refresh"
+                android:tint="#2A2929"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 android:padding="10dip"

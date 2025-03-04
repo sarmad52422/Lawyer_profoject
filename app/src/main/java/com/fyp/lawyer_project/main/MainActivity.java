@@ -186,6 +186,7 @@ public class MainActivity extends MainFragmentActivity {
 
     @Override
     public void onUserLoggedIn(User user) {
+        Log.e("User loggedin",user.getEmailAddress());
         User.setCurrentLoggedInUser(user);
         if (user instanceof Lawyer) {
             openFragment(new LawyerHome(), "LAWYER");

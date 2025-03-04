@@ -46,6 +46,7 @@ public class FirebaseHelper {
 
     public static void loginUser(String email, String password, String userType, Dialog progressBarView, FirebaseActions actions) {
         FirebaseAuth auth = FirebaseAuth.getInstance();
+        Log.e("ABout to log","in = "+auth.getCurrentUser());
         progressBarView.show();
         if (auth.getCurrentUser() == null) {
             auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
@@ -66,10 +67,15 @@ public class FirebaseHelper {
                     });
 
                 } else {
+                    Log.e("User = ","User Laready Logged In");
                     actions.onLogin("Error " + task.getException().getMessage(), null);
                     progressBarView.dismiss();
                 }
             });
+        }
+        else{
+            progressBarView.dismiss();
+            actions.onLogin("Already Logged In",null);
         }
     }
 
@@ -379,8 +385,9 @@ public class FirebaseHelper {
                         else if(userType.equals(User.TYPE_CLIENT))
                             user = childSnap.getValue(Client.class);
 
-                        if(user.getUserStatus()!= User.APPROVED)
-                        users.add(user);
+                        if(user.getUserStatus()!= User.APPROVED) {
+                            users.add(user);
+                        }
                     }
 
                 }

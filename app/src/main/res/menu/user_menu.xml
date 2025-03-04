@@ -11,8 +11,7 @@
 
     <item android:id="@+id/mng_schedules"
            android:title="Manage Schedules"/>
-    <item android:id="@+id/loginZoom"
-          android:title="Login Zoom"/>
+
     <item android:id="@+id/signout"
         android:title="Sign out"/>
 
