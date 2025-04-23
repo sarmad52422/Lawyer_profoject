@@ -17,6 +17,7 @@ import com.fyp.lawyer_project.modal_classes.ClientCase;
 import com.fyp.lawyer_project.modal_classes.Lawyer;
 import com.fyp.lawyer_project.modal_classes.User;
 import com.fyp.lawyer_project.utils.FirebaseHelper;
+import com.google.android.material.appbar.MaterialToolbar;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -41,7 +42,8 @@ public class MainActivity extends MainFragmentActivity {
         FirebaseApp.initializeApp(this);
         setContentView(R.layout.activity_main);
         initMainFragment();
-        findViewById(R.id.backBtn).setOnClickListener(view -> goBack());
+        MaterialToolbar toolbar = findViewById(R.id.simple_title_bar_layout);
+        toolbar.setNavigationOnClickListener(v -> goBack());
         mainActivity = this;
     }
 
@@ -145,6 +147,7 @@ public class MainActivity extends MainFragmentActivity {
                     if (user == null) {
                         Toast.makeText(getApplicationContext(), "No User Found", Toast.LENGTH_LONG).show();
                         FirebaseAuth.getInstance().signOut();
+                        openLoginFragment();
                     } else {
                         User.setCurrentLoggedInUser(user);
                         if (user.getUserType().equals(User.TYPE_CLIENT)) {
@@ -158,19 +161,21 @@ public class MainActivity extends MainFragmentActivity {
                 }
             });
         } else {
-            MainFragment fragment = new MainFragment();
-            fragment.setCallBackAction(this);
-            getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment).commit();
+            openLoginFragment();
         }
+    }
+
+    private void openLoginFragment() {
+        MainFragment fragment = new MainFragment();
+        fragment.setCallBackAction(this);
+        getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment).commit();
     }
 
     @Override
     public void signOut() {
         FirebaseAuth.getInstance().signOut();
         FirebaseMessaging.getInstance().deleteToken();
-        MainFragment fragment = new MainFragment();
-        fragment.setCallBackAction(this);
-        getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment).commit();
+        openLoginFragment();
         findViewById(R.id.simple_title_bar_layout).setVisibility(View.VISIBLE);
     }
 
@@ -186,7 +191,13 @@ public class MainActivity extends MainFragmentActivity {
 
     @Override
     public void onUserLoggedIn(User user) {
-        Log.e("User loggedin",user.getEmailAddress());
+        if (user == null) {
+            Log.e("MainActivity", "onUserLoggedIn: User is null");
+            Toast.makeText(this, "Login failed: User data not found", Toast.LENGTH_LONG).show();
+            openLoginFragment();
+            return;
+        }
+        Log.e("User loggedin", user.getEmailAddress());
         User.setCurrentLoggedInUser(user);
         if (user instanceof Lawyer) {
             openFragment(new LawyerHome(), "LAWYER");

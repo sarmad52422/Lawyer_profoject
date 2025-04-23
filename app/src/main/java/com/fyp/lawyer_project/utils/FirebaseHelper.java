@@ -3,12 +3,9 @@ package com.fyp.lawyer_project.utils;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.os.Build;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 
 import com.fyp.lawyer_project.modal_classes.Appointment;
 import com.fyp.lawyer_project.modal_classes.Client;
@@ -37,6 +34,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Objects;
+
+import kotlin.NotImplementedError;
 
 public class FirebaseHelper {
     public static final String CLIENT_TABLE = "Users/Client";
@@ -46,7 +46,7 @@ public class FirebaseHelper {
 
     public static void loginUser(String email, String password, String userType, Dialog progressBarView, FirebaseActions actions) {
         FirebaseAuth auth = FirebaseAuth.getInstance();
-        Log.e("ABout to log","in = "+auth.getCurrentUser());
+        Log.e("ABout to log", "in = " + auth.getCurrentUser());
         progressBarView.show();
         if (auth.getCurrentUser() == null) {
             auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
@@ -54,28 +54,36 @@ public class FirebaseHelper {
                     getUserInformation(email, userType, progressBarView, new FirebaseActions() {
                         @Override
                         public void onUserFound(User user) {
-                            if(user.getUserStatus() == User.APPROVED) {
+                            if (user.getUserStatus() == User.APPROVED) {
                                 actions.onLogin("Successful", user);
                                 updateUserToken(user);
                                 progressBarView.dismiss();
-                            }
-                            else{
-                                actions.onLogin("User Not Approved By Admin",null);
+                            } else {
+                                actions.onLogin("User Not Approved By Admin", null);
                                 auth.signOut();
                             }
+                        }
+
+                        @Override
+                        public void onUserUpdated(String status) {
+
+                        }
+
+                        @Override
+                        public void onError(String error) {
+
                         }
                     });
 
                 } else {
-                    Log.e("User = ","User Laready Logged In");
+                    Log.e("User = ", "User Laready Logged In");
                     actions.onLogin("Error " + task.getException().getMessage(), null);
                     progressBarView.dismiss();
                 }
             });
-        }
-        else{
+        } else {
             progressBarView.dismiss();
-            actions.onLogin("Already Logged In",null);
+            actions.onLogin("Already Logged In", null);
         }
     }
 
@@ -174,6 +182,7 @@ public class FirebaseHelper {
 
         FirebaseMessaging.getInstance().getToken().addOnCompleteListener(tokenTask -> { // generate uniqe token for messging for eache user
             String token = tokenTask.getResult();
+            Log.e("client",client.toString());
             if (auth.getCurrentUser() == null) {
                 auth.createUserWithEmailAndPassword(client.getEmailAddress(), client.getPassword()).addOnCompleteListener(signupTask -> {
                     if (signupTask.isSuccessful()) {
@@ -208,9 +217,29 @@ public class FirebaseHelper {
                                 action.onAppointmentError("Lawyer Not available on selected Time");
                             }
                         }
+
+                        @Override
+                        public void onUserUpdated(String status) {
+
+                        }
+
+                        @Override
+                        public void onError(String error) {
+
+                        }
                     });
 
                 }
+            }
+
+            @Override
+            public void onUserUpdated(String status) {
+
+            }
+
+            @Override
+            public void onError(String error) {
+
             }
         });
 //
@@ -224,8 +253,8 @@ public class FirebaseHelper {
                 Lawyer lawyer = snapshot.getValue(Lawyer.class);
                 assert lawyer != null;
                 String[] workingDays = lawyer.getSchedule().getWorkingDays().split("-");
-                Log.e("SECHULDE TABLE",getDayFromDate(appointment.getAppointmentDate()));
-                Log.e("SCHULE = ",timeInRange(lawyer.getSchedule().getFromTime(),lawyer.getSchedule().getToTime(),appointment.getAppointmentDate())+"");
+                Log.e("SECHULDE TABLE", getDayFromDate(appointment.getAppointmentDate()));
+                Log.e("SCHULE = ", timeInRange(lawyer.getSchedule().getFromTime(), lawyer.getSchedule().getToTime(), appointment.getAppointmentDate()) + "");
 
                 if (Arrays.asList(workingDays).contains(getDayFromDate(appointment.getAppointmentDate())) && timeInRange(lawyer.getSchedule().getFromTime(), lawyer.getSchedule().getToTime(), appointment.getAppointmentDate())) {
                     checkIfLawyerAlreadyBookedWithOtherClient(appointment, lawyer, actions);
@@ -302,9 +331,9 @@ public class FirebaseHelper {
             Date selectedTime = covertDateToTime(selectedTimeD);
             Date toTime = AmPmTo24(lawyerToTime);
             Date fromTime = AmPmTo24(lawyerFromTime);
-            Log.e("result = ",""+(selectedTime.after(fromTime)));
-            Log.e("Result 2 = ",""+(selectedTime.before(fromTime)));
-            Log.e("time ranges",selectedTime.toString()+" =====  "+toTime);
+            Log.e("result = ", "" + (selectedTime.after(fromTime)));
+            Log.e("Result 2 = ", "" + (selectedTime.before(fromTime)));
+            Log.e("time ranges", selectedTime.toString() + " =====  " + toTime);
             if (selectedTime.after(fromTime) && selectedTime.before(toTime)) {
                 return true;
             }
@@ -382,10 +411,10 @@ public class FirebaseHelper {
                         User user = null;
                         if (userType.equals(User.TYPE_LAWYER))
                             user = childSnap.getValue(Lawyer.class);
-                        else if(userType.equals(User.TYPE_CLIENT))
+                        else if (userType.equals(User.TYPE_CLIENT))
                             user = childSnap.getValue(Client.class);
 
-                        if(user.getUserStatus()!= User.APPROVED) {
+                        if (user.getUserStatus() != User.APPROVED) {
                             users.add(user);
                         }
                     }
@@ -403,12 +432,15 @@ public class FirebaseHelper {
 
 
     }
-    public static void approveUser(String userType,String userID){
-        String userTable = userType.equals(User.TYPE_CLIENT)?CLIENT_TABLE:LAWYER_TABLE;
+
+    public static void approveUser(String userType, String userID) {
+        String userTable = userType.equals(User.TYPE_CLIENT) ? CLIENT_TABLE : LAWYER_TABLE;
+        Log.e("User table = ",userTable);
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference(userTable).child(userID);
-        Log.e("Approving User",userID);
+        Log.e("Approving User", userID);
         ref.child("userStatus").setValue(User.APPROVED);
     }
+
     public static void findLawyers(String caseType, double startPrice, double endPrice, FirebaseActions actions) {
         ArrayList<User> lawyers = new ArrayList<>();
         Query reference = FirebaseDatabase.getInstance().getReference(LAWYER_TABLE).orderByChild("practiceArea").equalTo(caseType);
@@ -514,7 +546,7 @@ public class FirebaseHelper {
 //            }
 //        });
 //    }
-    public static void updateUser(String userType, User user) {
+    public static void updateUser(String userType, User user, FirebaseActions firebaseActions) {
         String userTable = userType.equals(User.TYPE_LAWYER) ? LAWYER_TABLE : CLIENT_TABLE;
         String userName = "_".concat(user.getEmailAddress().substring(0, user.getEmailAddress().indexOf('@')));
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference(userTable).child(userName);
@@ -526,7 +558,8 @@ public class FirebaseHelper {
         String id = "_".concat(user.getEmailAddress().substring(0, user.getEmailAddress().indexOf("@")));
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference(tableName).child(id);
         reference.setValue(user);
-//        reference.child("Phone_Number").setValue(user.getPhoneNumber());
+        Log.e("user Record = ",user.toString());
+        reference.child("Phone_Number").setValue(user.getPhoneNumber());
 
 
     }
@@ -546,14 +579,38 @@ public class FirebaseHelper {
     public static void loadCases(String lawyerId, FirebaseActions actions) {
         ArrayList<ClientCase> caseArrayList = new ArrayList<>();
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference(CASE_TABLE);
-        reference.orderByChild("lawyerID").equalTo(lawyerId).addListenerForSingleValueEvent(new ValueEventListener() {
+        reference.orderByChild("lawyerId").equalTo(lawyerId).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot childSnap : snapshot.getChildren()) {
-                    ClientCase clientCase = childSnap.getValue(ClientCase.class);
-                    if (clientCase != null) {
-                        if (clientCase.getCaseStatus().equals(ClientCase.NOT_ACCEPTED))
+                    try {
+                        // Manually construct ClientCase
+                        ClientCase clientCase = new ClientCase();
+                        clientCase.setCaseId(childSnap.child("caseId").getValue(String.class));
+                        clientCase.setCaseTitle(childSnap.child("caseTitle").getValue(String.class));
+                        clientCase.setCaseDetails(childSnap.child("caseDetails").getValue(String.class));
+                        clientCase.setCaseBudget(childSnap.child("caseBudget").getValue(Double.class));
+                        clientCase.setLawyerID(childSnap.child("lawyerId").getValue(String.class));
+                        clientCase.setClientID(childSnap.child("clientId").getValue(String.class));
+                        clientCase.setCaseStatus(childSnap.child("caseStatus").getValue(String.class));
+                        clientCase.setLawyerComment(childSnap.child("lawyerComment").getValue(String.class));
+                        clientCase.setClientFeedBack(childSnap.child("clientFeedBack").getValue(String.class));
+
+                        // Convert caseProgress to ArrayList<Comment>
+                        ArrayList<Comment> caseComments = new ArrayList<>();
+                        for (DataSnapshot s2 : childSnap.child("caseProgress").getChildren()) {
+                            Comment comment = new Comment();
+                            comment.setComment(s2.child("progressComment").getValue(String.class));
+                            comment.setDate(s2.child("Date").getValue(String.class));
+                            caseComments.add(comment);
+                        }
+                        clientCase.setCaseProgressComment(caseComments);
+
+                        if (clientCase.getCaseStatus().equals(ClientCase.NOT_ACCEPTED)) {
                             caseArrayList.add(clientCase);
+                        }
+                    } catch (Exception e) {
+                        Log.e("FirebaseHelper", "Error processing case: " + childSnap.getKey(), e);
                     }
                 }
                 actions.onCasesLoaded(caseArrayList);
@@ -561,33 +618,48 @@ public class FirebaseHelper {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
+                actions.onError(error.getMessage());
             }
         });
-
     }
 
     public static void loadClientsCases(String lawyerID, FirebaseActions actions) {
         ArrayList<ClientCase> caseArrayList = new ArrayList<>();
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference(CASE_TABLE);
-        reference.orderByChild("lawyerID").equalTo(lawyerID).addListenerForSingleValueEvent(new ValueEventListener() {
+        reference.orderByChild("lawyerId").equalTo(lawyerID).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot s1 : snapshot.getChildren()) {
+                    try {
+                        // Manually construct ClientCase
+                        ClientCase clientCase = new ClientCase();
+                        clientCase.setCaseId(s1.child("caseId").getValue(String.class));
+                        clientCase.setCaseTitle(s1.child("caseTitle").getValue(String.class));
+                        clientCase.setCaseDetails(s1.child("caseDetails").getValue(String.class));
+                        clientCase.setCaseBudget(s1.child("caseBudget").getValue(Double.class));
+                        clientCase.setLawyerID(s1.child("lawyerId").getValue(String.class));
+                        clientCase.setClientID(s1.child("clientId").getValue(String.class));
+                        clientCase.setCaseStatus(s1.child("caseStatus").getValue(String.class));
+                        clientCase.setLawyerComment(s1.child("lawyerComment").getValue(String.class));
+                        clientCase.setClientFeedBack(s1.child("clientFeedBack").getValue(String.class));
 
-                    ClientCase clientCase = s1.getValue(ClientCase.class);
-                    ArrayList<Comment> caseComments = new ArrayList<>();
-                    for (DataSnapshot s2 : s1.child("caseProgress").getChildren()) {
-                        Comment comment = new Comment();
-                        comment.setComment(s2.child("progressComment").getValue().toString());
-                        comment.setDate(s2.child("Date").getValue().toString());
-                        caseComments.add(comment);
+                        // Convert caseProgress to ArrayList<Comment>
+                        ArrayList<Comment> caseComments = new ArrayList<>();
+                        for (DataSnapshot s2 : s1.child("caseProgress").getChildren()) {
+                            Comment comment = new Comment();
+                            comment.setComment(s2.child("progressComment").getValue(String.class));
+                            comment.setDate(s2.child("Date").getValue(String.class));
+                            caseComments.add(comment);
+                        }
                         clientCase.setCaseProgressComment(caseComments);
-                    }
 
+                        Log.e("Cases = ", s1.child("caseProgress") + " <>");
 
-                    if (clientCase.getCaseStatus().equals(ClientCase.Active)) {
-                        caseArrayList.add(clientCase);
+                        if (clientCase.getCaseStatus().equals(ClientCase.Active)) {
+                            caseArrayList.add(clientCase);
+                        }
+                    } catch (Exception e) {
+                        Log.e("FirebaseHelper", "Error processing case: " + s1.getKey(), e);
                     }
                 }
                 actions.onCasesLoaded(caseArrayList);
@@ -595,33 +667,47 @@ public class FirebaseHelper {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
+                actions.onError(error.getMessage());
             }
         });
-
     }
 
     public static void loadCasesByUser(String userId, FirebaseActions actions) {
         ArrayList<ClientCase> caseArrayList = new ArrayList<>();
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference(CASE_TABLE);
-        reference.orderByChild("clientID").equalTo(userId).addListenerForSingleValueEvent(new ValueEventListener() {
+        Log.e("Loading", "Cases");
+        reference.orderByChild("clientId").equalTo(userId).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot s1 : snapshot.getChildren()) {
+                    try {
+                        // Manually construct ClientCase
+                        ClientCase clientCase = new ClientCase();
+                        clientCase.setCaseId(s1.child("caseId").getValue(String.class));
+                        clientCase.setCaseTitle(s1.child("caseTitle").getValue(String.class));
+                        clientCase.setCaseDetails(s1.child("caseDetails").getValue(String.class));
+                        clientCase.setCaseBudget(s1.child("caseBudget").getValue(Double.class));
+                        clientCase.setLawyerID(s1.child("lawyerId").getValue(String.class));
+                        clientCase.setClientID(s1.child("clientId").getValue(String.class));
+                        clientCase.setCaseStatus(s1.child("caseStatus").getValue(String.class));
+                        clientCase.setLawyerComment(s1.child("lawyerComment").getValue(String.class));
+                        clientCase.setClientFeedBack(s1.child("clientFeedBack").getValue(String.class));
 
-                    ClientCase clientCase = s1.getValue(ClientCase.class);
-                    ArrayList<Comment> caseComments = new ArrayList<>();
-                    for (DataSnapshot s2 : s1.child("caseProgress").getChildren()) {
-                        Comment comment = new Comment();
-                        comment.setComment(s2.child("progressComment").getValue().toString());
-                        comment.setDate(s2.child("Date").getValue().toString());
-                        caseComments.add(comment);
+                        // Convert caseProgress to ArrayList<Comment>
+                        ArrayList<Comment> caseComments = new ArrayList<>();
+                        for (DataSnapshot s2 : s1.child("caseProgress").getChildren()) {
+                            Comment comment = new Comment();
+                            comment.setComment(s2.child("progressComment").getValue(String.class));
+                            comment.setDate(s2.child("Date").getValue(String.class));
+                            caseComments.add(comment);
+                        }
                         clientCase.setCaseProgressComment(caseComments);
-                    }
 
-
-                    if (clientCase.getCaseStatus().equals(ClientCase.Active)) {
-                        caseArrayList.add(clientCase);
+                        if (clientCase.getCaseStatus().equals(ClientCase.Active)) {
+                            caseArrayList.add(clientCase);
+                        }
+                    } catch (Exception e) {
+                        Log.e("FirebaseHelper", "Error processing case: " + s1.getKey(), e);
                     }
                 }
                 actions.onCasesLoaded(caseArrayList);
@@ -629,17 +715,16 @@ public class FirebaseHelper {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
+                actions.onError(error.getMessage());
             }
         });
     }
-
     public static void getUserToken(String userId, FirebaseActions actions) {
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference(CLIENT_TABLE).child(userId);
         reference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                String token = snapshot.child("token").getValue().toString();
+                String token = Objects.requireNonNull(snapshot.child("token").getValue()).toString();
                 actions.onUserTokenLoaded(token);
             }
 
@@ -708,6 +793,16 @@ public class FirebaseHelper {
                     }
                 });
             }
+
+            @Override
+            public void onUserUpdated(String status) {
+
+            }
+
+            @Override
+            public void onError(String error) {
+
+            }
         });
 
     }
@@ -739,6 +834,19 @@ public class FirebaseHelper {
             }
         });
     }
+    public static void saveCase(ClientCase clientCase, FirebaseActions actions) {
+        DatabaseReference casesRef = FirebaseDatabase.getInstance().getReference("Cases").child(clientCase.getCaseId());
+        casesRef.setValue(clientCase).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                Log.d("SAVE CASE", "Case saved successfully: " + clientCase.getCaseId());
+                actions.onCaseSaved();
+            } else {
+                String error = task.getException() != null ? task.getException().getMessage() : "Unknown error";
+                Log.e("SAVE CASE", "Error saving case: " + error);
+                actions.onError(error);
+            }
+        });
+    }
 
 
     private static String getUserTable(String userType) {
@@ -751,6 +859,9 @@ public class FirebaseHelper {
     }
 
     public interface FirebaseActions {
+        default void onCaseSaved(){
+            throw  new NotImplementedError();
+        }
         default void onUsersLoaded(ArrayList<User> users) {
         }
 
@@ -809,5 +920,12 @@ public class FirebaseHelper {
         }
 
 
+        default void onUserUpdated(String status){
+
+        }
+
+        default void onError(String error){
+
+        }
     }
 }

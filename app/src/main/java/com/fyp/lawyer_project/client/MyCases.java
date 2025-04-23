@@ -90,6 +90,7 @@ public class MyCases extends RootFragment {
             @Override
             public void onCasesLoaded(ArrayList<ClientCase> caseArrayList) {
                 ClientsAdapter adapter = new ClientsAdapter(caseArrayList);
+                Log.e("Cases","Loaded "+caseArrayList.size());
                 recyclerView.setAdapter(adapter);
             }
         });

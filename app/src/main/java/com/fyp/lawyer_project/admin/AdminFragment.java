@@ -63,6 +63,16 @@ public class AdminFragment extends RootFragment {
                 UserAdapter userAdapter = new UserAdapter(users, userType);
                 userList.setAdapter(userAdapter);
             }
+
+            @Override
+            public void onUserUpdated(String status) {
+
+            }
+
+            @Override
+            public void onError(String error) {
+
+            }
         });
 
 
@@ -116,6 +126,7 @@ public class AdminFragment extends RootFragment {
 
         private void showActionApproveDialog(int pos) {
             User user = users.get(pos);
+            Log.e("user = ",user.toString());
             AlertDialog.Builder dialog = new AlertDialog.Builder(rootView.getContext());
             dialog.setTitle("User Status");
             dialog.setMessage("Do you want to Approve User?");

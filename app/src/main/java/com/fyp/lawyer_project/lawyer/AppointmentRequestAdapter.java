@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.fyp.lawyer_project.R;
 import com.fyp.lawyer_project.modal_classes.Appointment;
 import com.fyp.lawyer_project.utils.FirebaseHelper;
+import com.fyp.lawyer_project.utils.Utilities;
 
 import java.util.ArrayList;
 
@@ -64,7 +65,7 @@ public class AppointmentRequestAdapter extends RecyclerView.Adapter<AppointmentR
         if (position != -1) {
             appointmentArrayList.remove(position);
             notifyItemRemoved(position);
-            notifyItemRangeChanged(position, appointmentArrayList.size()); // Ensure layout adjusts
+            notifyItemRangeChanged(position, appointmentArrayList.size());
         }
     }
 
@@ -93,15 +94,22 @@ public class AppointmentRequestAdapter extends RecyclerView.Adapter<AppointmentR
         @SuppressLint("NotifyDataSetChanged")
         @Override
         public void onClick(View view) {
+            Appointment appointment = appointmentArrayList.get(position);
             if (view.getId() == R.id.viewAppointmentMessageButton) {
-                openAppointmentMessage(appointmentArrayList.get(position));
+                openAppointmentMessage(appointment);
             } else if (view.getId() == R.id.cancel_appointment_button) {
                 ((TextView) confirmationDialog.findViewById(R.id.confirmationMessageView)).setText(
                         "Are You Sure You Want To Reject Appointment?"
                 );
                 confirmationDialog.findViewById(R.id.positiveButton).setOnClickListener(v1 -> {
-                    Appointment appointment = appointmentArrayList.get(position);
                     FirebaseHelper.updateAppointmentStatus(appointment.getAppointmentId(), Appointment.STATUS_REJECTED);
+                    FirebaseHelper.getUserToken(appointment.getClientID(), new FirebaseHelper.FirebaseActions() {
+                        @Override
+                        public void onUserTokenLoaded(String token) {
+                            Utilities.sendFCMPush(iContext, token, "Appointment Rejected",
+                                    "Your appointment on " + appointment.getAppointmentDate() + " was rejected.");
+                        }
+                    });
                     confirmationDialog.dismiss();
                     callBack.onAppointmentRejected(appointment);
                 });
@@ -112,8 +120,14 @@ public class AppointmentRequestAdapter extends RecyclerView.Adapter<AppointmentR
                         "Are You Sure You Want To Accept Appointment?"
                 );
                 confirmationDialog.findViewById(R.id.positiveButton).setOnClickListener(v1 -> {
-                    Appointment appointment = appointmentArrayList.get(position);
                     FirebaseHelper.updateAppointmentStatus(appointment.getAppointmentId(), Appointment.STATUS_ACCEPTED);
+                    FirebaseHelper.getUserToken(appointment.getClientID(), new FirebaseHelper.FirebaseActions() {
+                        @Override
+                        public void onUserTokenLoaded(String token) {
+                            Utilities.sendFCMPush(iContext, token, "Appointment Accepted",
+                                    "Your appointment on " + appointment.getAppointmentDate() + " was accepted.");
+                        }
+                    });
                     confirmationDialog.dismiss();
                     callBack.onAppointmentAccepted(appointment);
                 });

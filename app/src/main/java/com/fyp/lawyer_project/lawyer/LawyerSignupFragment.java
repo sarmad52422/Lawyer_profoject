@@ -83,7 +83,7 @@ public class LawyerSignupFragment extends RootFragment {
         String confirmPass = ((EditText) rootView.findViewById(R.id.confirmfield)).getText().toString().trim();
         if (!name.isEmpty() && !email.isEmpty() && !phoneNumber.isEmpty() && !fieldArea.isEmpty() && !pass.isEmpty() && startPrice > 0 && endPrice > 0) {
             if (pass.equals(confirmPass)) {
-                Lawyer lawyer = new Lawyer(User.TYPE_LAWYER,null, name, email, pass, phoneNumber, fieldArea, startPrice, endPrice);
+                Lawyer lawyer = new Lawyer(User.TYPE_LAWYER,null, name, email, pass, phoneNumber, fieldArea, startPrice, endPrice,"");
                 FirebaseHelper.signUpUser(lawyer, new ProgressDialog(rootView.getContext()), new FirebaseHelper.FirebaseActions() {
                     @Override
                     public void onSignupComplete(String status) {

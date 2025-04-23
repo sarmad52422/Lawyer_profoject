@@ -1,53 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="5dip"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/date_selection"
-        app:layout_constraintTop_toTopOf="parent"
-        android:textColor="@color/black"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
 
-        app:layout_constraintStart_toStartOf="parent"
-        android:text="Select Date"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Select Time"
-        android:textColor="@color/black"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:id="@+id/timeSlotSelector"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/messageBoxTitle"
-        app:layout_constraintTop_toBottomOf="@id/date_selection"
-        app:layout_constraintStart_toStartOf="parent"
-        android:text="@string/custom_message_optional"
-        android:textColor="@color/black"
-        android:layout_marginTop="20dip"/>
-    <EditText
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/date_selection_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/messageBoxTitle"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginTop="8dip"
-        android:maxLines="10"
-        android:id="@+id/messageBox"
-        android:hint="Type Message Here"
-        android:inputType="textCapSentences|textMultiLine"
-        android:maxLength="2000"/>
-    <Button
+        android:hint="Select Date">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/date_selection"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="none"
+            android:focusable="false" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/time_slot_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/messageBox"
-        android:layout_marginTop="10dip"
-        android:textAllCaps="false"
+        android:hint="Select Time"
+        android:layout_marginTop="8dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/timeSlotSelector"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="none"
+            android:focusable="false" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/message_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Message"
+        android:layout_marginTop="8dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/messageBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textMultiLine" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <ProgressBar
+        android:id="@+id/payment_progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        android:layout_marginTop="8dp" />
+
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/sendAppointmentBtn"
-        android:text="Send Appointment Request"/>
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Book Appointment ($50)"
+        android:layout_marginTop="16dp"
+        android:backgroundTint="#3F51B5"
+        android:textColor="#FFFFFF" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

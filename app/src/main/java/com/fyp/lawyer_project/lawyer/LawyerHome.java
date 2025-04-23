@@ -16,12 +16,14 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.utils.widget.ImageFilterView;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.fyp.common.CaseRequestsDialog;
 import com.fyp.lawyer_project.R;
 import com.fyp.lawyer_project.main.MainFragment;
@@ -41,6 +43,8 @@ import org.jitsi.meet.sdk.JitsiMeetConferenceOptions;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class LawyerHome extends RootFragment implements NavigationView.OnNavigationItemSelectedListener, AppointmentRequestAdapter.AppointmentListCallBack {
     private View rootView;
@@ -65,7 +69,8 @@ public class LawyerHome extends RootFragment implements NavigationView.OnNavigat
     @Override
     public void onResume() {
         initHomeScreen();
-        refreshFragment(); // Refresh on resume to ensure latest data
+        refreshFragment();
+        loadAppointmentRequest();
         super.onResume();
     }
 
@@ -76,7 +81,7 @@ public class LawyerHome extends RootFragment implements NavigationView.OnNavigat
 
     private void refreshFragment() {
         Log.d("LawyerHome", "Refreshing appointment lists");
-        loadAppointmentRequest(); // Reload data from Firebase
+        loadAppointmentRequest();
     }
 
     private void openDrawer() {
@@ -90,7 +95,26 @@ public class LawyerHome extends RootFragment implements NavigationView.OnNavigat
         View header = navView.getHeaderView(0);
         ((TextView) rootView.findViewById(R.id.lawyer_profile_name)).setText(currentUser.getFullName());
         ((TextView) rootView.findViewById(R.id.user_last_name)).setText(currentUser.getLastName());
-        ((TextView) header.findViewById(R.id.drawer_user_namme)).setText(currentUser.getFullName());
+        ((TextView) header.findViewById(R.id.drawer_user_name)).setText(currentUser.getFullName());
+        ((TextView) header.findViewById(R.id.drawer_user_email)).setText(currentUser.getEmailAddress());
+
+        CircleImageView drawerImage = header.findViewById(R.id.user_drawer_image);
+        if (currentUser.getProfileImageUrl() != null && !currentUser.getProfileImageUrl().isEmpty()) {
+            Glide.with(this)
+                    .load(currentUser.getProfileImageUrl())
+                    .placeholder(R.drawable.userlogin)
+                    .error(R.drawable.userlogin)
+                    .into(drawerImage);
+        }
+
+        CircleImageView topBarImage = rootView.findViewById(R.id.userProfileImage);
+        if (currentUser.getProfileImageUrl() != null && !currentUser.getProfileImageUrl().isEmpty()) {
+            Glide.with(this)
+                    .load(currentUser.getProfileImageUrl())
+                    .placeholder(R.drawable.login)
+                    .error(R.drawable.login)
+                    .into(topBarImage);
+        }
     }
 
     private void loadAppointmentRequest() {
@@ -103,11 +127,11 @@ public class LawyerHome extends RootFragment implements NavigationView.OnNavigat
         ArrayList<Appointment> notAcceptedAppointments = new ArrayList<>();
         ArrayList<Appointment> acceptedAppointments = new ArrayList<>();
         String userId = "_" + currentUser.getEmailAddress().substring(0, currentUser.getEmailAddress().indexOf("@"));
-
+        Log.e("userid",userId);
         FirebaseHelper.loadAppointmentRequests(userId, new FirebaseHelper.FirebaseActions() {
             @Override
             public void onAppointmentRecordLoaded(ArrayList<Appointment> appointments) {
-                notAcceptedAppointments.clear(); // Clear existing data
+                notAcceptedAppointments.clear();
                 acceptedAppointments.clear();
                 for (Appointment appointment : appointments) {
                     if (appointment.getAppointmentStatus().equals(Appointment.STATUS_NOT_ACCEPTED)) {
@@ -117,13 +141,13 @@ public class LawyerHome extends RootFragment implements NavigationView.OnNavigat
                     }
                 }
 
-                // Initialize or update adapters
                 if (requestAdapter == null) {
                     requestAdapter = new AppointmentRequestAdapter(notAcceptedAppointments, rootView.getContext());
                     requestAdapter.setOnItemCallBack(LawyerHome.this);
                     appoinmentRequestList.setAdapter(requestAdapter);
                 } else {
                     requestAdapter.updateAppointments(notAcceptedAppointments);
+                    appoinmentRequestList.setAdapter(requestAdapter);
                 }
 
                 if (upcomingAdapter == null) {
@@ -132,6 +156,7 @@ public class LawyerHome extends RootFragment implements NavigationView.OnNavigat
                     upComingAppointments.setAdapter(upcomingAdapter);
                 } else {
                     upcomingAdapter.updateAppointments(acceptedAppointments);
+                    upComingAppointments.setAdapter(upcomingAdapter);
                 }
 
                 rootView.findViewById(R.id.requestLoadingProgress).setVisibility(View.GONE);
@@ -235,7 +260,7 @@ public class LawyerHome extends RootFragment implements NavigationView.OnNavigat
         RecyclerView appoinmentRequestList = rootView.findViewById(R.id.appointment_request_list);
         AppointmentRequestAdapter adapter = (AppointmentRequestAdapter) appoinmentRequestList.getAdapter();
         FirebaseHelper.updateAppointmentStatus(appointment.getAppointmentId(), Appointment.STATUS_REJECTED);
-        adapter.removeItem(appointment); // Remove from UI
+        adapter.removeItem(appointment);
         Toast.makeText(getContext(), "Appointment rejected", Toast.LENGTH_SHORT).show();
     }
 

@@ -8,6 +8,12 @@ public  abstract class User{
     public static final String TYPE_LAWYER = "Lawyer";
     public static final String TYPE_CLIENT = "Client";
 
+    public User(String emailAddress,String password, String userType) {
+        this.userType = userType;
+        this.emailAddress = emailAddress;
+        this.password = password;
+    }
+
     @Override
     public String toString() {
         return "User{" +

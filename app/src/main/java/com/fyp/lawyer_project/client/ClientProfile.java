@@ -1,4 +1,4 @@
-package com.fyp.lawyer_project.lawyer;
+package com.fyp.lawyer_project.client;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -15,13 +15,12 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.constraintlayout.utils.widget.ImageFilterView;
 
 import com.bumptech.glide.Glide;
 import com.fyp.lawyer_project.R;
 import com.fyp.lawyer_project.main.MainFragmentActivity;
 import com.fyp.lawyer_project.main.RootFragment;
-import com.fyp.lawyer_project.modal_classes.Lawyer;
+import com.fyp.lawyer_project.modal_classes.Client;
 import com.fyp.lawyer_project.modal_classes.User;
 import com.fyp.lawyer_project.utils.FirebaseHelper;
 import com.google.android.material.navigation.NavigationView;
@@ -42,9 +41,9 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-public class LawyerProfile extends RootFragment {
+public class ClientProfile extends RootFragment {
     private View rootView;
-    private Lawyer user;
+    private Client user;
     private Uri selectedImageUri;
     private CircleImageView profileImageView;
     private ProgressDialog progressDialog;
@@ -66,8 +65,8 @@ public class LawyerProfile extends RootFragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        rootView = inflater.inflate(R.layout.lawyer_profile_layout, container, false);
-        initLawyerProfile();
+        rootView = inflater.inflate(R.layout.client_profile_layout, container, false);
+        initClientProfile();
         initActions();
         return rootView;
     }
@@ -99,13 +98,11 @@ public class LawyerProfile extends RootFragment {
         clearInputErrors();
 
         TextInputEditText nameField = rootView.findViewById(R.id.profileNameField);
-        TextInputEditText expertiseField = rootView.findViewById(R.id.profileExpertiseField);
         TextInputEditText phoneField = rootView.findViewById(R.id.profilePhoneNumberField);
         TextInputEditText passwordField = rootView.findViewById(R.id.profilePasswordField);
         TextInputEditText confirmPasswordField = rootView.findViewById(R.id.profileConfirmPasswordField);
 
         String fullName = nameField.getText().toString().trim();
-        String practiceArea = expertiseField.getText().toString().trim();
         String phoneNumber = phoneField.getText().toString().trim();
         String password = passwordField.getText().toString().trim();
         String confirmPassword = confirmPasswordField.getText().toString().trim();
@@ -113,10 +110,6 @@ public class LawyerProfile extends RootFragment {
         boolean hasError = false;
         if (fullName.isEmpty()) {
             setInputError(R.id.name_input_layout, "Full name is required");
-            hasError = true;
-        }
-        if (practiceArea.isEmpty()) {
-            setInputError(R.id.expertise_input_layout, "Expertise is required");
             hasError = true;
         }
         if (phoneNumber.isEmpty()) {
@@ -131,7 +124,6 @@ public class LawyerProfile extends RootFragment {
         }
 
         user.setFullName(fullName);
-        user.setPracticeArea(practiceArea);
         user.setPhoneNumber(phoneNumber);
 
         if (!password.isEmpty()) {
@@ -167,19 +159,18 @@ public class LawyerProfile extends RootFragment {
     }
 
     private void updateUserInFirebase() {
-        FirebaseHelper.updateUser(User.TYPE_LAWYER, user, new FirebaseHelper.FirebaseActions() {
+        FirebaseHelper.updateUser(User.TYPE_CLIENT, user, new FirebaseHelper.FirebaseActions() {
             @Override
             public void onUserUpdated(String status) {
                 isUploadingImage = false;
                 progressDialog.dismiss();
                 Toast.makeText(rootView.getContext(), "Profile Updated Successfully", Toast.LENGTH_SHORT).show();
                 if (user.getProfileImageUrl() != null && !user.getProfileImageUrl().isEmpty()) {
-                    Glide.with(LawyerProfile.this)
+                    Glide.with(ClientProfile.this)
                             .load(user.getProfileImageUrl())
                             .placeholder(R.drawable.lawyer_icon3)
                             .error(R.drawable.lawyer_icon3)
                             .into(profileImageView);
-                    // Notify other components to update profile image
                     updateProfileImageAcrossApp(user.getProfileImageUrl());
                 }
             }
@@ -194,34 +185,35 @@ public class LawyerProfile extends RootFragment {
     }
 
     private void updateProfileImageAcrossApp(String imageUrl) {
-        NavigationView navView = getActivity().findViewById(R.id.navViewLawyer);
+        // Update drawer header
+        NavigationView navView = getActivity().findViewById(R.id.navView);
         if (navView != null) {
             View header = navView.getHeaderView(0);
-            ImageFilterView userImage = header.findViewById(R.id.user_drawer_image);
-            Glide.with(LawyerProfile.this)
+            CircleImageView userImage = header.findViewById(R.id.drawer_user_avatar);
+            Glide.with(ClientProfile.this)
                     .load(imageUrl)
-                    .placeholder(R.drawable.userlogin)
-                    .error(R.drawable.userlogin)
+                    .placeholder(R.drawable.lawyer)
+                    .error(R.drawable.lawyer)
                     .into(userImage);
         }
 
-        ImageFilterView topBarImage = getActivity().findViewById(R.id.userProfileImage);
+        // Update top bar
+        CircleImageView topBarImage = getActivity().findViewById(R.id.userProfileImage);
         if (topBarImage != null) {
-            Glide.with(LawyerProfile.this)
+            Glide.with(ClientProfile.this)
                     .load(imageUrl)
-                    .placeholder(R.drawable.login)
-                    .error(R.drawable.login)
+                    .placeholder(R.drawable.lawyer)
+                    .error(R.drawable.lawyer)
                     .into(topBarImage);
         }
     }
 
-    private void initLawyerProfile() {
-        user = (Lawyer) User.getCurrentLoggedInUser();
+    private void initClientProfile() {
+        user = (Client) User.getCurrentLoggedInUser();
         if (user != null) {
             ((TextInputEditText) rootView.findViewById(R.id.profileNameField)).setText(user.getFullName());
             ((TextInputEditText) rootView.findViewById(R.id.profileEmailField)).setText(user.getEmailAddress());
             ((TextInputEditText) rootView.findViewById(R.id.profilePhoneNumberField)).setText(user.getPhoneNumber());
-            ((TextInputEditText) rootView.findViewById(R.id.profileExpertiseField)).setText(user.getPracticeArea());
 
             profileImageView = rootView.findViewById(R.id.profile_image);
             String profileImageUrl = user.getProfileImageUrl();
@@ -293,7 +285,6 @@ public class LawyerProfile extends RootFragment {
                 R.id.name_input_layout,
                 R.id.email_input_layout,
                 R.id.phone_input_layout,
-                R.id.expertise_input_layout,
                 R.id.password_input_layout,
                 R.id.confirm_password_input_layout
         };

@@ -1,57 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/material_dynamic_neutral95"
-    android:padding="3dip"
+    android:background="?attr/colorPrimary"
+    android:padding="12dp">
 
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            app:layout_constraintEnd_toStartOf="@+id/user_last_name"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:id="@+id/notifyIcon"
-            android:layout_height="wrap_content">
+    <androidx.constraintlayout.utils.widget.ImageFilterView
+        android:id="@+id/drawer_btn"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:src="@android:drawable/ic_menu_sort_by_size"
+        android:tint="?attr/colorOnPrimary"
+        android:contentDescription="Open Drawer"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+    <TextView
+        android:id="@+id/user_last_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Last Name"
+        android:textSize="18sp"
+        android:textColor="?attr/colorOnPrimary"
+        android:ellipsize="end"
+        android:maxLines="1"
+        app:layout_constraintStart_toEndOf="@id/drawer_btn"
+        app:layout_constraintEnd_toStartOf="@id/notifyIcon"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintWidth_percent="0.5" />
+
+    <RelativeLayout
+        android:id="@+id/notifyIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toStartOf="@id/userProfileImage"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginEnd="16dp">
+
         <androidx.constraintlayout.utils.widget.ImageFilterView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
             android:src="@android:drawable/stat_notify_chat"
-            app:tint="#000"
+            android:tint="?attr/colorOnPrimary" />
 
-            android:layout_marginEnd="30dip"/>
-            <ImageView
-                android:layout_width="10dip"
-                android:layout_height="10dip"
-                android:id="@+id/notifyIconAlert"
-                android:visibility="gone"
-                android:src="#00FF00"/>
-        </RelativeLayout>
-        <androidx.constraintlayout.utils.widget.ImageFilterView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/drawer_btn"
-            app:tint="#000000"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            android:src="@android:drawable/ic_menu_sort_by_size"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Last Name"
-            android:textSize="20sp"
-            android:id="@+id/user_last_name"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/userProfileImage"
-            android:layout_marginEnd="5dip"
-            android:textColor="#000000"/>
-        <androidx.constraintlayout.utils.widget.ImageFilterView
-            android:layout_width="50dip"
-            android:layout_height="50dip"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:id="@+id/userProfileImage"
-            android:src="@drawable/login"/>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        <ImageView
+            android:id="@+id/notifyIconAlert"
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:src="@android:drawable/presence_online"
+            android:visibility="gone" />
+    </RelativeLayout>
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/userProfileImage"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/login"
+        android:contentDescription="User Profile"
+        app:civ_border_color="?attr/colorOnPrimary"
+        app:civ_border_width="2dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

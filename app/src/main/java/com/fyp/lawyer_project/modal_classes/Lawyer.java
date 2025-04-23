@@ -5,16 +5,21 @@ public class Lawyer extends User {
     private Schedule schedule;
     private double startPrice = 0.0d;
     private double endPrice = 0.0d;
+    private String profileImageUrl;
 
-    public Lawyer(String userType, Schedule schedule, String fullName, String emailAddress, String password, String phoneNumber, String practiceArea, double startPrice, double endPrice) {
+    public Lawyer(String userType, Schedule schedule, String fullName, String emailAddress, String password, String phoneNumber, String practiceArea, double startPrice, double endPrice, String profileImageUrl) {
         super(userType, fullName, emailAddress, password, phoneNumber);
         this.practiceArea = practiceArea;
         this.startPrice = startPrice;
         this.endPrice = endPrice;
+        this.profileImageUrl = profileImageUrl;
         if (null == schedule)
             this.schedule = new Schedule("01:00 PM", "03:00 PM", "Monday-Tuesday-Sunday");
         else
             this.schedule = schedule;
+    }
+
+    public Lawyer() {
     }
 
     public void setStartPrice(double startPrice) {
@@ -33,9 +38,6 @@ public class Lawyer extends User {
         return endPrice;
     }
 
-    public Lawyer() {
-    }
-
     public Schedule getSchedule() {
         return schedule;
     }
@@ -48,8 +50,15 @@ public class Lawyer extends User {
         return practiceArea;
     }
 
-
     public void setPracticeArea(String practiceArea) {
         this.practiceArea = practiceArea;
+    }
+
+    public String getProfileImageUrl() {
+        return profileImageUrl != null ? profileImageUrl : "";
+    }
+
+    public void setProfileImageUrl(String profileImageUrl) {
+        this.profileImageUrl = profileImageUrl;
     }
 }

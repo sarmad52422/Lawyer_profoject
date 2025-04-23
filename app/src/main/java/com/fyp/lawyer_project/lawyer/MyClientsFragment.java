@@ -85,6 +85,16 @@ public class MyClientsFragment extends RootFragment {
                         Log.e("Sending FCM =",token);
                         Utilities.sendFCMPush(getContext(),token,"Case Progress",editText.getText().toString());
                     }
+
+                    @Override
+                    public void onUserUpdated(String status) {
+
+                    }
+
+                    @Override
+                    public void onError(String error) {
+
+                    }
                 });
                 dialogInterface.dismiss();
             }));
