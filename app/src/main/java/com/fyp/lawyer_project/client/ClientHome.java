@@ -361,7 +361,7 @@ public class ClientHome extends RootFragment implements NavigationView.OnNavigat
 
                             @Override
                             public void onAppointSendComplete() {
-                                FirebaseHelper.getUserToken(pendingAppointment.getLawyerID(), new FirebaseHelper.FirebaseActions() {
+                                FirebaseHelper.getUserToken(pendingAppointment.getLawyerID(),User.TYPE_LAWYER, new FirebaseHelper.FirebaseActions() {
                                     @Override
                                     public void onUserTokenLoaded(String token) {
                                         Utilities.sendFCMPush(getContext(), token, "New Appointment Request",
@@ -635,7 +635,8 @@ public class ClientHome extends RootFragment implements NavigationView.OnNavigat
             FirebaseHelper.saveCase(clientCase, new FirebaseHelper.FirebaseActions() {
                 @Override
                 public void onCaseSaved() {
-                    FirebaseHelper.getUserToken(lawyerId, new FirebaseHelper.FirebaseActions() {
+
+                    FirebaseHelper.getUserToken(lawyerId,User.TYPE_LAWYER, new FirebaseHelper.FirebaseActions() {
                         @Override
                         public void onUserTokenLoaded(String token) {
                             Utilities.sendFCMPush(getContext(), token, "New Case Request",

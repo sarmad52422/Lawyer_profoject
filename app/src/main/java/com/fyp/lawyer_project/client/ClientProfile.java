@@ -144,6 +144,7 @@ public class ClientProfile extends RootFragment {
                 public void onSuccess(String imageUrl) {
                     user.setProfileImageUrl(imageUrl);
                     updateUserInFirebase();
+                    progressDialog.dismiss();
                 }
 
                 @Override

@@ -559,7 +559,7 @@ public class FirebaseHelper {
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference(tableName).child(id);
         reference.setValue(user);
         Log.e("user Record = ",user.toString());
-        reference.child("Phone_Number").setValue(user.getPhoneNumber());
+//        reference.child("Phone_Number").setValue(user.getPhoneNumber());
 
 
     }
@@ -719,8 +719,11 @@ public class FirebaseHelper {
             }
         });
     }
-    public static void getUserToken(String userId, FirebaseActions actions) {
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference(CLIENT_TABLE).child(userId);
+    public static void getUserToken(String userId,String userType, FirebaseActions actions) {
+        String tableName = userType.equals(User.TYPE_CLIENT)? CLIENT_TABLE:LAWYER_TABLE;
+        Log.e("USER TYPE,ID","Table Name = "+tableName+"  =====  user id = "+userId);
+
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference(tableName).child(userId);
         reference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {

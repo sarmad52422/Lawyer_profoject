@@ -22,6 +22,7 @@ import com.fyp.lawyer_project.main.MainFragmentActivity;
 import com.fyp.lawyer_project.main.RootFragment;
 import com.fyp.lawyer_project.modal_classes.ClientCase;
 import com.fyp.lawyer_project.modal_classes.Comment;
+import com.fyp.lawyer_project.modal_classes.User;
 import com.fyp.lawyer_project.utils.FirebaseHelper;
 import com.fyp.lawyer_project.utils.Utilities;
 import com.google.firebase.auth.FirebaseAuth;
@@ -79,7 +80,7 @@ public class MyClientsFragment extends RootFragment {
             inputDialog.setMessage("Enter Current Progress Message");
             inputDialog.setPositiveButton("Update", ((dialogInterface, i) -> {
                 FirebaseHelper.updateCaseProgress(clientCase.getCaseId(), editText.getText().toString());
-                FirebaseHelper.getUserToken(clientCase.getClientID(), new FirebaseHelper.FirebaseActions() {
+                FirebaseHelper.getUserToken(clientCase.getClientID(), User.TYPE_CLIENT, new FirebaseHelper.FirebaseActions() {
                     @Override
                     public void onUserTokenLoaded(String token) {
                         Log.e("Sending FCM =",token);

@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.fyp.lawyer_project.R;
 import com.fyp.lawyer_project.modal_classes.ClientCase;
+import com.fyp.lawyer_project.modal_classes.User;
 import com.fyp.lawyer_project.utils.FirebaseHelper;
 import com.fyp.lawyer_project.utils.Utilities;
 
@@ -103,7 +104,7 @@ public class CaseRequestsDialog extends Dialog {
 
             holder.acceptButton.setOnClickListener(v -> {
                 FirebaseHelper.acceptCase(clientCase.getCaseId());
-                FirebaseHelper.getUserToken(clientCase.getClientID(), new FirebaseHelper.FirebaseActions() {
+                FirebaseHelper.getUserToken(clientCase.getClientID(), User.TYPE_CLIENT, new FirebaseHelper.FirebaseActions() {
                     @Override
                     public void onUserTokenLoaded(String token) {
                         Utilities.sendFCMPush(getContext(), token, "Case Accepted",
@@ -123,7 +124,7 @@ public class CaseRequestsDialog extends Dialog {
 
             holder.rejectButton.setOnClickListener(v -> {
                 FirebaseHelper.rejectCase(clientCase.getCaseId());
-                FirebaseHelper.getUserToken(clientCase.getClientID(), new FirebaseHelper.FirebaseActions() {
+                FirebaseHelper.getUserToken(clientCase.getClientID(),User.TYPE_CLIENT, new FirebaseHelper.FirebaseActions() {
                     @Override
                     public void onUserTokenLoaded(String token) {
                         Utilities.sendFCMPush(getContext(), token, "Case Rejected",

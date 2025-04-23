@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.fyp.lawyer_project.R;
 import com.fyp.lawyer_project.modal_classes.Appointment;
+import com.fyp.lawyer_project.modal_classes.User;
 import com.fyp.lawyer_project.utils.FirebaseHelper;
 import com.fyp.lawyer_project.utils.Utilities;
 
@@ -103,7 +104,7 @@ public class AppointmentRequestAdapter extends RecyclerView.Adapter<AppointmentR
                 );
                 confirmationDialog.findViewById(R.id.positiveButton).setOnClickListener(v1 -> {
                     FirebaseHelper.updateAppointmentStatus(appointment.getAppointmentId(), Appointment.STATUS_REJECTED);
-                    FirebaseHelper.getUserToken(appointment.getClientID(), new FirebaseHelper.FirebaseActions() {
+                    FirebaseHelper.getUserToken(appointment.getClientID(), User.TYPE_CLIENT ,new FirebaseHelper.FirebaseActions() {
                         @Override
                         public void onUserTokenLoaded(String token) {
                             Utilities.sendFCMPush(iContext, token, "Appointment Rejected",
@@ -121,7 +122,7 @@ public class AppointmentRequestAdapter extends RecyclerView.Adapter<AppointmentR
                 );
                 confirmationDialog.findViewById(R.id.positiveButton).setOnClickListener(v1 -> {
                     FirebaseHelper.updateAppointmentStatus(appointment.getAppointmentId(), Appointment.STATUS_ACCEPTED);
-                    FirebaseHelper.getUserToken(appointment.getClientID(), new FirebaseHelper.FirebaseActions() {
+                    FirebaseHelper.getUserToken(appointment.getClientID(),User.TYPE_CLIENT, new FirebaseHelper.FirebaseActions() {
                         @Override
                         public void onUserTokenLoaded(String token) {
                             Utilities.sendFCMPush(iContext, token, "Appointment Accepted",
